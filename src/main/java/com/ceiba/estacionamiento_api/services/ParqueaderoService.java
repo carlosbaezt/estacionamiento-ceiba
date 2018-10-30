@@ -1,4 +1,5 @@
 package com.ceiba.estacionamiento_api.services;
+import java.math.BigDecimal;
 import java.util.Calendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,19 +96,17 @@ public class ParqueaderoService {
 		{
 			switch(day) 
 			{
-				case Calendar.SUNDAY:
-					throw new VehiculoNoAdmitidoException("NO ADMITIDO POR DIA");
+				case Calendar.SUNDAY:break;
+				case Calendar.MONDAY:break;
 				
-				case Calendar.MONDAY:
+				default:
 					throw new VehiculoNoAdmitidoException("NO ADMITIDO POR DIA");
-				
-				default:break;
 			}					
-		}	
+		}
 	}
 	
 
-	public void retirarVehiculo(String placa) throws VehiculoNoAdmitidoException
+	public BigDecimal retirarVehiculo(String placa) throws VehiculoNoAdmitidoException
 	{
 		ParqueoEntity parqueoEntity = parqueoRepository.consultarParqueoActivoPorPlaca(placa);
 		if(parqueoEntity == null) {
@@ -115,7 +114,7 @@ public class ParqueaderoService {
 		}
 		
 		ParqueoVehiculo parqueoVehiculo = parqueoFactory.obtenerParqueo(parqueoEntity.getVehiculo().getTipoVehiculo().getId().intValue());
-		parqueoVehiculo.retirarParqueoPorPlaca(placa);
+		return parqueoVehiculo.retirarParqueoPorPlaca(placa);
 	}
 	
 	public void obtenerVehiculosParqueados()

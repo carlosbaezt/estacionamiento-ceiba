@@ -17,11 +17,9 @@ import com.ceiba.estacionamiento_api.persistence.entities.ParqueoEntity;
 import com.ceiba.estacionamiento_api.persistence.entities.TipoVehiculoEntity;
 import com.ceiba.estacionamiento_api.persistence.entities.VehiculoEntity;
 import com.ceiba.estacionamiento_api.services.ParqueoVehiculo;
-import com.ceiba.estacionamiento_api.utils.Constantes;
-import com.ceiba.estacionamiento_api.utils.ParqueoCalculadora;
 
 @Service
-public class ParqueoCarro implements ParqueoVehiculo {
+public class ParqueoCarro extends ParqueoVehiculo {
 	
 	private static final int TOTAL_ESPACIOS_DISPONIBLES = 20;
 	private static final int VALOR_DIA = 8000;
@@ -56,7 +54,7 @@ public class ParqueoCarro implements ParqueoVehiculo {
 			throw new VehiculoNoAdmitidoException("No hay espacios disponibles");
 		}
 		
-		VehiculoEntity vehiculoEntity = vehiculoRepository.consultarPorPlaca(parqueo.getVehiculo().getPlaca());
+		VehiculoEntity vehiculoEntity = vehiculoRepository.findByPlacaIgnoreCase(parqueo.getVehiculo().getPlaca());
 		if(vehiculoEntity == null)
 		{
 			vehiculoEntity = new VehiculoEntity();
@@ -77,38 +75,13 @@ public class ParqueoCarro implements ParqueoVehiculo {
 
 
 	@Override
-	public void retirarParqueoPorPlaca(String placa) throws VehiculoNoAdmitidoException {
+	public BigDecimal retirarParqueoPorPlaca(String placa) throws VehiculoNoAdmitidoException {
 		ParqueoEntity parqueoEntity = parqueoRepository.consultarParqueoActivoPorPlaca(placa);
 		parqueoEntity.setFechaSalida(new Date());
-		BigDecimal valorParqueo = calcularPrecio(parqueoEntity.getFechaIngreso(), parqueoEntity.getFechaSalida());
+		BigDecimal valorParqueo = calcularPrecioPorTiempo(parqueoEntity.getFechaIngreso(), parqueoEntity.getFechaSalida(), VALOR_DIA, VALOR_HORA);
 		parqueoEntity.setPrecio(valorParqueo);
 		parqueoRepository.save(parqueoEntity);
-	}
-	
-	@Override
-	public BigDecimal calcularPrecio(Date fechaIngreso, Date fechaSalida) {
 		
-		BigDecimal total         = new BigDecimal("0");
-		int horasParqueo         = ParqueoCalculadora.obtenerHorasParqueo(fechaIngreso,fechaSalida);
-		int diasParqueoCompletos = (int) Math.floor(horasParqueo / Constantes.TOTAL_HORAS_DIA);
-		
-		if(diasParqueoCompletos > 1)
-		{
-			total = BigDecimal.valueOf((double) diasParqueoCompletos * VALOR_DIA);
-			horasParqueo = (int) (horasParqueo % Constantes.TOTAL_HORAS_DIA);
-		}
-		
-		if(horasParqueo < Constantes.MAXIMO_HORAS_PARQUEO )
-		{
-			double valorTotalHoras = (horasParqueo * VALOR_HORA);
-			total = total.add(BigDecimal.valueOf(valorTotalHoras));
-		}
-		else
-		{
-			total = total.add(BigDecimal.valueOf(VALOR_DIA));
-		}
-		
-		return total;
-		
+		return valorParqueo;
 	}
 }

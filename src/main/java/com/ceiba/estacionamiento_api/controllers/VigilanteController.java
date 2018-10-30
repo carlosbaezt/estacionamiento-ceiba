@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.ceiba.estacionamiento_api.dto.VehiculoDTO;
 import com.ceiba.estacionamiento_api.exceptions.VehiculoNoAdmitidoException;
@@ -38,12 +37,10 @@ public class VigilanteController {
 	public String retirarVehiculo(@PathVariable String placa)
 	{
 		try {
-			parquederoService.retirarVehiculo(placa);
+			return String.valueOf(parquederoService.retirarVehiculo(placa));
 		} catch (VehiculoNoAdmitidoException e) {
 			return e.getMessage();
 		}
-		
-		return "Todo OK";
 	}
 	
 	@GetMapping(value = "/obtenerParqueados")
