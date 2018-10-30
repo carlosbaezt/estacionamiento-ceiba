@@ -6,15 +6,18 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import com.ceiba.estacionamiento_api.persistence.entities.ParqueoEntity;;
+import com.ceiba.estacionamiento_api.persistence.entities.ParqueoEntity;
 
 @Repository
 public interface ParqueoRepository extends JpaRepository<ParqueoEntity, Long> {
 	
-	@Query(value = "SELECT * FROM parqueo INNER JOIN vehiculo ON vehiculo.id = parqueo.vehiculo_id WHERE fecha_salida IS NULL AND placa = :placa ", nativeQuery = true)
+	@Query(value = "SELECT * FROM parqueo INNER JOIN vehiculo ON vehiculo.id = parqueo.vehiculo_id WHERE parqueo.fecha_salida IS NULL AND vehiculo.placa = :placa ", nativeQuery = true)
 	public ParqueoEntity consultarParqueoActivoPorPlaca(@Param("placa") String placa);
 	
 	@Query(value = "SELECT * FROM parqueo WHERE fecha_salida IS NULL", nativeQuery = true)
 	public List<ParqueoEntity> obtenerParqueosActivos();
+	
+	@Query(value = "SELECT COUNT(*) as total FROM parqueo INNER JOIN vehiculo ON vehiculo.id = parqueo.vehiculo_id WHERE parqueo.fecha_salida IS NULL AND vehiculo.tipo_vehiculo_id = :tipoVehiculo ", nativeQuery = true)
+	public Integer obtenerParqueosActivosPorTipoVehiculo(@Param("tipoVehiculo") int tipoVehiculo);
 
 }

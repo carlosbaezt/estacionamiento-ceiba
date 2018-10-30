@@ -2,7 +2,6 @@ package com.ceiba.estacionamiento_api.services;
 import java.util.Calendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 
 import com.ceiba.estacionamiento_api.dto.VehiculoDTO;
@@ -11,6 +10,7 @@ import com.ceiba.estacionamiento_api.exceptions.VehiculoNoAdmitidoException;
 import com.ceiba.estacionamiento_api.models.Parqueo;
 import com.ceiba.estacionamiento_api.models.Vehiculo;
 import com.ceiba.estacionamiento_api.persistence.ParqueoRepository;
+import com.ceiba.estacionamiento_api.utils.Constantes;
 
 @Controller
 public class ParqueaderoService {
@@ -23,29 +23,11 @@ public class ParqueaderoService {
 	
 	public void ingresarVehiculo(VehiculoDTO vehiculoDTO) throws VehiculoNoAdmitidoException
 	{
-		//Se valida que los datos esten completos
-		if(vehiculoDTO == null)
-		{
-			throw new VehiculoNoAdmitidoException("Vehiculo NULO");
-		}
-		
-		if(vehiculoDTO.getPlaca() == null)
-		{
-			throw new VehiculoNoAdmitidoException("PLACA NULA");
-		}
-		
-		//Se valida que el vehiculo sea valido por el día
-		if(placaNoValidaPorDia(vehiculoDTO.getPlaca())){
-			throw new VehiculoNoAdmitidoException("NO ADMITIDO POR DIA");			
-		}
-		
-		// Se valida que el vehiculo no este parqueado actualmente
-		if(parqueoRepository.consultarParqueoActivoPorPlaca(vehiculoDTO.getPlaca()) != null) {
-			throw new VehiculoNoAdmitidoException("ACTUALMENTE PARQUEADO");
-		}
-		
+		validarVehiculoDTO(vehiculoDTO);		
+		validarAccesoAlParqueadero(vehiculoDTO);
+				
 		//Se crea el factory de acuerdo al tipo de vehiculo
-		ParqueoVehiculo parqueoVehiculo = parqueoFactory.obtenerParqueo(TipoVehiculo.CARRO);
+		ParqueoVehiculo parqueoVehiculo = parqueoFactory.obtenerParqueo(vehiculoDTO.getTipoVehiculo());
 		
 		//Se guarda el vehiculo
 		Vehiculo vehiculo = new Vehiculo();
@@ -62,6 +44,36 @@ public class ParqueaderoService {
 		parqueoVehiculo.guardarParqueo(parqueo);
 	}
 
+	private void validarVehiculoDTO(VehiculoDTO vehiculoDTO) throws VehiculoNoAdmitidoException {
+
+		if(vehiculoDTO == null)
+		{
+			throw new VehiculoNoAdmitidoException("Vehiculo NULO");
+		}
+		
+		if(vehiculoDTO.getPlaca() == null)
+		{
+			throw new VehiculoNoAdmitidoException("PLACA NULA");
+		}
+		
+		validarTipoVehiculo(vehiculoDTO.getTipoVehiculo());
+	}
+	
+	private void validarTipoVehiculo(Integer tipoVehiculo) throws VehiculoNoAdmitidoException {
+		if(tipoVehiculo == null){
+			throw new VehiculoNoAdmitidoException("TIPO DE VEHICULO NULO");
+		}
+		
+		for (TipoVehiculo enumTipoVehiculo : TipoVehiculo.values()) {
+	       if (enumTipoVehiculo.getCodigo() == tipoVehiculo) {
+	    	   return;
+	        }
+	    }
+		
+		throw new VehiculoNoAdmitidoException("TIPO DE VEHICULO INVALIDO");
+		
+	}
+
 	public void sacarVehiculo(String placa)
 	{
 		
@@ -72,21 +84,34 @@ public class ParqueaderoService {
 		
 	}
 	
+	private void validarAccesoAlParqueadero(VehiculoDTO vehiculoDTO) throws VehiculoNoAdmitidoException
+	{
+		if(parqueoRepository.consultarParqueoActivoPorPlaca(vehiculoDTO.getPlaca()) != null) {
+			throw new VehiculoNoAdmitidoException("ACTUALMENTE PARQUEADO");
+		}
+		
+		placaNoValidaPorDia(vehiculoDTO.getPlaca());
+	}
 	
-	private boolean placaNoValidaPorDia(String placa)
+	
+	private void placaNoValidaPorDia(String placa) throws VehiculoNoAdmitidoException
 	{
 		Calendar calendar = Calendar.getInstance();
 		int day = calendar.get(Calendar.DAY_OF_WEEK); 
 		
-		if(
-			placa.charAt(0) == 'A' && 
-			(day != Calendar.MONDAY && day != Calendar.SUNDAY)
-		)
+		if(placa.charAt(0) == Constantes.LETRA_INICIAL_PLACA_NO_ADMITIDA)
 		{
-			return true;
-		}
-		
-		return false;
+			switch(day) 
+			{
+				case Calendar.SUNDAY:
+					throw new VehiculoNoAdmitidoException("NO ADMITIDO POR DIA");
+				
+				case Calendar.MONDAY:
+					throw new VehiculoNoAdmitidoException("NO ADMITIDO POR DIA");
+				
+				default:break;
+			
+			}					
+		}	
 	}
-
 }

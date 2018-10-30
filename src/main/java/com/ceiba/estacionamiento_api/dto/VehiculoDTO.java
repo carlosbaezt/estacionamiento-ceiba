@@ -28,7 +28,7 @@ public class VehiculoDTO {
 	public void setCilindraje(Integer cilindraje) {
 		this.cilindraje = cilindraje;
 	}
-	public int getTipoVehiculo() {
+	public Integer getTipoVehiculo() {
 		return tipoVehiculo;
 	}
 	public void setTipoVehiculo(Integer tipoVehiculo) {

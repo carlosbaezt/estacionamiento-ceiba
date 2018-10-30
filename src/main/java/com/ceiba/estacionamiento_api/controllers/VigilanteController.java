@@ -1,9 +1,11 @@
 package com.ceiba.estacionamiento_api.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.ceiba.estacionamiento_api.dto.VehiculoDTO;
@@ -17,7 +19,8 @@ public class VigilanteController {
 	@Autowired
 	ParqueaderoService parquederoService;
 	
-	@RequestMapping(value = "/ingresarVehiculo", method = RequestMethod.POST)
+	@PostMapping(value = "/ingresarVehiculo")
+	@CrossOrigin
 	public String ingresarVehiculo(@RequestBody VehiculoDTO vehiculoDTO)
 	{
 		try {
@@ -29,23 +32,18 @@ public class VigilanteController {
 		return "Todo OK";
 	}
 	
-	@RequestMapping(value = "/sacarVehiculo", method = RequestMethod.GET)
-	public void sacarVehiculo(@RequestParam String placa)
+	@GetMapping(value = "/sacarVehiculo")
+	@CrossOrigin
+	public String sacarVehiculo(@RequestParam String placa)
 	{
-		
+		return "HOLA";		
 	}
 	
-	@RequestMapping(value = "/obtenerParqueados", method = RequestMethod.GET)
+	@GetMapping(value = "/obtenerParqueados")
+	@CrossOrigin
 	public String obtenerVehiculosParqueados()
 	{
 		return "HOLA";
-	}
-	
-	@RequestMapping(value = "/guardarTipoVehiculo", method = RequestMethod.GET)
-	public String guardarTipoVehiculo()
-	{
-		return "HOLAXX";
-		
 	}
 	
 }

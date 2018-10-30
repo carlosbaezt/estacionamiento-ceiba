@@ -1,5 +1,6 @@
 package com.ceiba.estacionamiento_api.services.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ceiba.estacionamiento_api.enums.TipoVehiculo;
 import com.ceiba.estacionamiento_api.services.ParqueoFactory;
@@ -7,22 +8,24 @@ import com.ceiba.estacionamiento_api.services.ParqueoVehiculo;
 
 @Service
 public class ParqueoFactoryImpl implements ParqueoFactory {
+	
+	@Autowired
+	ParqueoCarro parqueoCarro;
+	
+	@Autowired
+	ParqueoMoto parqueoMoto;
 
 	@Override
-	public ParqueoVehiculo obtenerParqueo(TipoVehiculo tipoVehiculo)
+	public ParqueoVehiculo obtenerParqueo(Integer tipoVehiculo)
 	{
 		ParqueoVehiculo parqueo = null;
 		
-		switch (tipoVehiculo)
+		if(tipoVehiculo == TipoVehiculo.CARRO.getCodigo())
 		{
-			case CARRO:
-				parqueo = new ParqueoCarro();
-			break;
-			
-			case MOTO:
-				parqueo = new ParqueoMoto();
-			break;
-		
+			parqueo = parqueoCarro;			
+		}else if(tipoVehiculo == TipoVehiculo.MOTO.getCodigo())
+		{
+			parqueo = parqueoMoto;
 		}
 		
 		return parqueo;

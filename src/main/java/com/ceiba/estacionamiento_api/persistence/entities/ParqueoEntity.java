@@ -21,11 +21,11 @@ public class ParqueoEntity {
 	@ManyToOne
 	private VehiculoEntity vehiculo;
 	
-	@Column(name = "fecha_ingreso" , columnDefinition = "DATE DEFAULT CURRENT_DATE")
-	private java.sql.Date fechaIngreso;
+	@Column(name = "fecha_ingreso" , columnDefinition = "DATETIME DEFAULT CURRENT_DATE")
+	private java.util.Date fechaIngreso;
 	
 	@Column(name = "fecha_salida")
-	private java.sql.Date fechaSalida;
+	private java.util.Date fechaSalida;
 	
 	@Column(name = "precio")
 	private BigDecimal precio;
@@ -46,11 +46,11 @@ public class ParqueoEntity {
 		this.vehiculo = vehiculo;
 	}
 
-	public java.sql.Date getFechaIngreso() {
+	public java.util.Date getFechaIngreso() {
 		return fechaIngreso;
 	}
 
-	public void setFechaIngreso(java.sql.Date fechaIngreso) {
+	public void setFechaIngreso(java.util.Date fechaIngreso) {
 		this.fechaIngreso = fechaIngreso;
 	}
 	
