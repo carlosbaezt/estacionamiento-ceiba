@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
 @RequestMapping("vigilante")
 public class VigilanteController {
 		
-	private final Logger log = LoggerFactory.getLogger(this.getClass());
+	private static final Logger log = LoggerFactory.getLogger(VigilanteController.class);
 	
 	@Autowired
 	ParqueaderoService parquederoService;
