@@ -8,15 +8,15 @@ import com.ceiba.estacionamiento_api.models.Parqueo;
 import com.ceiba.estacionamiento_api.utils.Constantes;
 import com.ceiba.estacionamiento_api.utils.ParqueoCalculadora;
 
-public abstract class ParqueoVehiculo {
+public interface ParqueoVehiculo {
 	
-	public abstract boolean espacioDisponible();
+	public boolean espacioDisponible();
 		
-	public abstract void guardarParqueo(Parqueo parqueo) throws VehiculoNoAdmitidoException;
+	public void guardarParqueo(Parqueo parqueo) throws VehiculoNoAdmitidoException;
 	
-	public abstract BigDecimal retirarParqueoPorPlaca(String placa) throws VehiculoNoAdmitidoException;
+	public BigDecimal retirarParqueoPorPlaca(String placa) throws VehiculoNoAdmitidoException;
 	
-	public BigDecimal calcularPrecioPorTiempo(Date fechaIngreso, Date fechaSalida, double valorDia, double valorHora) {		
+	default BigDecimal calcularPrecioPorTiempo(Date fechaIngreso, Date fechaSalida, double valorDia, double valorHora) {		
 		BigDecimal total         = new BigDecimal("0");
 		int horasParqueo         = ParqueoCalculadora.obtenerHorasParqueo(fechaIngreso,fechaSalida);
 		int diasParqueoCompletos = (int) Math.floor(horasParqueo / Constantes.TOTAL_HORAS_DIA);

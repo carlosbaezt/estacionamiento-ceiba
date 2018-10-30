@@ -19,7 +19,7 @@ import com.ceiba.estacionamiento_api.persistence.entities.VehiculoEntity;
 import com.ceiba.estacionamiento_api.services.ParqueoVehiculo;
 
 @Service
-public class ParqueoMoto extends ParqueoVehiculo {
+public class ParqueoMoto implements ParqueoVehiculo {
 	
 	private static final int TOTAL_ESPACIOS_DISPONIBLES = 10;
 	private static final int VALOR_DIA = 4000;
