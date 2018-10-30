@@ -3,6 +3,7 @@ package com.ceiba.estacionamiento_api.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,11 +33,17 @@ public class VigilanteController {
 		return "Todo OK";
 	}
 	
-	@GetMapping(value = "/sacarVehiculo")
+	@GetMapping(value = "/retirarVehiculo/{placa}")
 	@CrossOrigin
-	public String sacarVehiculo(@RequestParam String placa)
+	public String retirarVehiculo(@PathVariable String placa)
 	{
-		return "HOLA";		
+		try {
+			parquederoService.retirarVehiculo(placa);
+		} catch (VehiculoNoAdmitidoException e) {
+			return e.getMessage();
+		}
+		
+		return "Todo OK";
 	}
 	
 	@GetMapping(value = "/obtenerParqueados")

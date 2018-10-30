@@ -10,6 +10,7 @@ import com.ceiba.estacionamiento_api.exceptions.VehiculoNoAdmitidoException;
 import com.ceiba.estacionamiento_api.models.Parqueo;
 import com.ceiba.estacionamiento_api.models.Vehiculo;
 import com.ceiba.estacionamiento_api.persistence.ParqueoRepository;
+import com.ceiba.estacionamiento_api.persistence.entities.ParqueoEntity;
 import com.ceiba.estacionamiento_api.utils.Constantes;
 
 @Controller
@@ -20,6 +21,7 @@ public class ParqueaderoService {
 	
 	@Autowired
 	ParqueoFactory parqueoFactory;
+	
 	
 	public void ingresarVehiculo(VehiculoDTO vehiculoDTO) throws VehiculoNoAdmitidoException
 	{
@@ -73,16 +75,6 @@ public class ParqueaderoService {
 		throw new VehiculoNoAdmitidoException("TIPO DE VEHICULO INVALIDO");
 		
 	}
-
-	public void sacarVehiculo(String placa)
-	{
-		
-	}
-	
-	public void obtenerVehiculosParqueados()
-	{
-		
-	}
 	
 	private void validarAccesoAlParqueadero(VehiculoDTO vehiculoDTO) throws VehiculoNoAdmitidoException
 	{
@@ -110,8 +102,24 @@ public class ParqueaderoService {
 					throw new VehiculoNoAdmitidoException("NO ADMITIDO POR DIA");
 				
 				default:break;
-			
 			}					
 		}	
+	}
+	
+
+	public void retirarVehiculo(String placa) throws VehiculoNoAdmitidoException
+	{
+		ParqueoEntity parqueoEntity = parqueoRepository.consultarParqueoActivoPorPlaca(placa);
+		if(parqueoEntity == null) {
+			throw new VehiculoNoAdmitidoException("ACTUALMENTE NO ESTA PARQUEADO");
+		}
+		
+		ParqueoVehiculo parqueoVehiculo = parqueoFactory.obtenerParqueo(parqueoEntity.getVehiculo().getTipoVehiculo().getId().intValue());
+		parqueoVehiculo.retirarParqueoPorPlaca(placa);
+	}
+	
+	public void obtenerVehiculosParqueados()
+	{
+		
 	}
 }

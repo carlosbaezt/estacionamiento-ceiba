@@ -53,7 +53,20 @@ public class ParqueoEntity {
 	public void setFechaIngreso(java.util.Date fechaIngreso) {
 		this.fechaIngreso = fechaIngreso;
 	}
-	
-	 
-	
+
+	public java.util.Date getFechaSalida() {
+		return fechaSalida;
+	}
+
+	public void setFechaSalida(java.util.Date fechaSalida) {
+		this.fechaSalida = fechaSalida;
+	}
+
+	public BigDecimal getPrecio() {
+		return precio;
+	}
+
+	public void setPrecio(BigDecimal precio) {
+		this.precio = precio;
+	}	
 }
