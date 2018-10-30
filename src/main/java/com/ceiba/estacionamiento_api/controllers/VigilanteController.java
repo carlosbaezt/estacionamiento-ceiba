@@ -11,10 +11,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ceiba.estacionamiento_api.dto.VehiculoDTO;
 import com.ceiba.estacionamiento_api.exceptions.VehiculoNoAdmitidoException;
 import com.ceiba.estacionamiento_api.services.ParqueaderoService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @RestController
 @RequestMapping("vigilante")
 public class VigilanteController {
+		
+	private final Logger log = LoggerFactory.getLogger(this.getClass());
 	
 	@Autowired
 	ParqueaderoService parquederoService;
@@ -26,6 +30,7 @@ public class VigilanteController {
 		try {
 			parquederoService.ingresarVehiculo(vehiculoDTO);
 		} catch (VehiculoNoAdmitidoException e) {
+			log.error(e.getMessage());
 			return e.getMessage();
 		}
 		
@@ -39,6 +44,7 @@ public class VigilanteController {
 		try {
 			return String.valueOf(parquederoService.retirarVehiculo(placa));
 		} catch (VehiculoNoAdmitidoException e) {
+			log.error(e.getMessage());
 			return e.getMessage();
 		}
 	}
