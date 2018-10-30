@@ -49,7 +49,6 @@ public class ParqueoMoto extends ParqueoVehiculo {
 		return espaciosDisponibles;
 	}
 
-
 	@Override
 	public void guardarParqueo(Parqueo parqueo) throws VehiculoNoAdmitidoException {
 		if(!espacioDisponible())

@@ -1,8 +1,10 @@
 package com.ceiba.estacionamiento_api.services;
 import java.math.BigDecimal;
 import java.util.Calendar;
+import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 
 import com.ceiba.estacionamiento_api.dto.VehiculoDTO;
@@ -22,6 +24,9 @@ public class ParqueaderoService {
 	
 	@Autowired
 	ParqueoFactory parqueoFactory;
+	
+	@Autowired
+	private MessageSource messageSource;
 	
 	
 	public void ingresarVehiculo(VehiculoDTO vehiculoDTO) throws VehiculoNoAdmitidoException
@@ -51,12 +56,12 @@ public class ParqueaderoService {
 
 		if(vehiculoDTO == null)
 		{
-			throw new VehiculoNoAdmitidoException("Vehiculo NULO");
+			throw new VehiculoNoAdmitidoException(messageSource.getMessage("vehiculo.nulo",null,Locale.getDefault()));
 		}
 		
 		if(vehiculoDTO.getPlaca() == null)
 		{
-			throw new VehiculoNoAdmitidoException("PLACA NULA");
+			throw new VehiculoNoAdmitidoException(messageSource.getMessage("vehiculo.placaNula",null,Locale.getDefault()));
 		}
 		
 		validarTipoVehiculo(vehiculoDTO.getTipoVehiculo());
@@ -64,7 +69,7 @@ public class ParqueaderoService {
 	
 	private void validarTipoVehiculo(Integer tipoVehiculo) throws VehiculoNoAdmitidoException {
 		if(tipoVehiculo == null){
-			throw new VehiculoNoAdmitidoException("TIPO DE VEHICULO NULO");
+			throw new VehiculoNoAdmitidoException(messageSource.getMessage("vehiculo.tipoVehiculoNulo",null,Locale.getDefault()));
 		}
 		
 		for (TipoVehiculo enumTipoVehiculo : TipoVehiculo.values()) {
@@ -73,14 +78,14 @@ public class ParqueaderoService {
 	        }
 	    }
 		
-		throw new VehiculoNoAdmitidoException("TIPO DE VEHICULO INVALIDO");
+		throw new VehiculoNoAdmitidoException(messageSource.getMessage("vehiculo.tipoVehiculoInvalido",null,Locale.getDefault()));
 		
 	}
 	
 	private void validarAccesoAlParqueadero(VehiculoDTO vehiculoDTO) throws VehiculoNoAdmitidoException
 	{
 		if(parqueoRepository.consultarParqueoActivoPorPlaca(vehiculoDTO.getPlaca()) != null) {
-			throw new VehiculoNoAdmitidoException("ACTUALMENTE PARQUEADO");
+			throw new VehiculoNoAdmitidoException(messageSource.getMessage("vehiculo.actualmenteParqueado",null,Locale.getDefault()));
 		}
 		
 		placaNoValidaPorDia(vehiculoDTO.getPlaca());
@@ -100,7 +105,7 @@ public class ParqueaderoService {
 				case Calendar.MONDAY:break;
 				
 				default:
-					throw new VehiculoNoAdmitidoException("NO ADMITIDO POR DIA");
+					throw new VehiculoNoAdmitidoException(messageSource.getMessage("vehiculo.invalidoPorDia",null,Locale.getDefault()));
 			}					
 		}
 	}
@@ -110,7 +115,7 @@ public class ParqueaderoService {
 	{
 		ParqueoEntity parqueoEntity = parqueoRepository.consultarParqueoActivoPorPlaca(placa);
 		if(parqueoEntity == null) {
-			throw new VehiculoNoAdmitidoException("ACTUALMENTE NO ESTA PARQUEADO");
+			throw new VehiculoNoAdmitidoException(messageSource.getMessage("vehiculo.noEstaParqueado",null,Locale.getDefault()));
 		}
 		
 		ParqueoVehiculo parqueoVehiculo = parqueoFactory.obtenerParqueo(parqueoEntity.getVehiculo().getTipoVehiculo().getId().intValue());
