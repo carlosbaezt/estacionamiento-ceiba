@@ -1,15 +1,11 @@
 package com.ceiba.estacionamiento_api.dto;
 
-import java.util.Date;
-
 public class ParqueoDTO {
 	
 	private String placa;
 	private String tipoVehiculo;
-	private Date fechaIngreso;
+	private String fechaIngreso;
 	
-	
-	public ParqueoDTO() {}
 	
 	public String getPlaca() {
 		return placa;
@@ -23,10 +19,10 @@ public class ParqueoDTO {
 	public void setTipoVehiculo(String tipoVehiculo) {
 		this.tipoVehiculo = tipoVehiculo;
 	}
-	public Date getFechaIngreso() {
+	public String getFechaIngreso() {
 		return fechaIngreso;
 	}
-	public void setFechaIngreso(Date fechaIngreso) {
+	public void setFechaIngreso(String fechaIngreso) {
 		this.fechaIngreso = fechaIngreso;
 	}
 }

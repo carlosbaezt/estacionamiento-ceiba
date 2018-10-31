@@ -1,4 +1,6 @@
 package com.ceiba.estacionamiento_api.services;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -123,11 +125,12 @@ public class ParqueaderoService {
 	{
 		List<ParqueoDTO> parqueosDTO = new ArrayList<>();
 		List<ParqueoEntity> parqueosEntity  = parqueoRepository.obtenerParqueosActivos();
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
 		
 		for(ParqueoEntity parqueoEntity : parqueosEntity )
 		{
 			ParqueoDTO parqueoDTO = new ParqueoDTO();
-			parqueoDTO.setFechaIngreso(parqueoEntity.getFechaIngreso());
+			parqueoDTO.setFechaIngreso(dateFormat.format(parqueoEntity.getFechaIngreso()));
 			parqueoDTO.setPlaca(parqueoEntity.getVehiculo().getPlaca());
 			parqueoDTO.setTipoVehiculo(parqueoEntity.getVehiculo().getTipoVehiculo().getNombre());
 			parqueosDTO.add(parqueoDTO);
