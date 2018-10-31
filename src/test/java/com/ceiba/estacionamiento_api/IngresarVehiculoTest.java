@@ -190,5 +190,23 @@ public class IngresarVehiculoTest {
 			Assert.assertEquals(e.getMessage(), messageSource.getMessage("parqueadero.sinEspacioDisponible",null,Locale.getDefault()));
 		}
 	}
+	
+	@Test
+	public void ingresarVehiculoDosVeces()
+	{
+		//Arrange
+		vehiculoDTO = new VehiculoDTO();
+		vehiculoDTO.setPlaca("NET456");
+		vehiculoDTO.setTipoVehiculo(TipoVehiculo.CARRO.getCodigo());
+		
+		try {
+			//Act
+			parquederoService.ingresarVehiculo(vehiculoDTO);
+			parquederoService.ingresarVehiculo(vehiculoDTO);
+			//Assert
+		} catch (VehiculoNoAdmitidoException e) {
+			Assert.assertEquals(e.getMessage(), messageSource.getMessage("vehiculo.actualmenteParqueado",null,Locale.getDefault()));
+		}		
+	}
 
 }
