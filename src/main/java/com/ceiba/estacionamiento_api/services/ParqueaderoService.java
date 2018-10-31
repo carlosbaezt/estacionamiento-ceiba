@@ -100,18 +100,20 @@ public class ParqueaderoService {
 	private void placaNoValidaPorDia(String placa) throws VehiculoNoAdmitidoException
 	{
 		Calendar calendar = Calendar.getInstance();
-		int day = calendar.get(Calendar.DAY_OF_WEEK); 
+		int day = calendar.get(Calendar.DAY_OF_WEEK);
 		
-		if(placa.charAt(0) == Constantes.LETRA_INICIAL_PLACA_NO_ADMITIDA)
+		if(placa.charAt(0) != Constantes.LETRA_INICIAL_PLACA_NO_ADMITIDA)
 		{
-			switch(day) 
-			{
-				case Calendar.SUNDAY:break;
-				case Calendar.MONDAY:break;
-				
-				default:
-					throw new VehiculoNoAdmitidoException(messageSource.getMessage("vehiculo.invalidoPorDia",null,Locale.getDefault()));
-			}					
+			return;
+		}
+		
+		switch(day) 
+		{
+			case Calendar.SUNDAY:break;
+			case Calendar.MONDAY:break;
+			
+			default:
+				throw new VehiculoNoAdmitidoException(messageSource.getMessage("vehiculo.invalidoPorDia",null,Locale.getDefault()));
 		}
 	}
 	

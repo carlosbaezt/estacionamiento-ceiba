@@ -14,6 +14,9 @@ import com.ceiba.estacionamiento_api.dto.VehiculoDTO;
 import com.ceiba.estacionamiento_api.exceptions.VehiculoNoAdmitidoException;
 import com.ceiba.estacionamiento_api.models.Parqueo;
 import com.ceiba.estacionamiento_api.services.ParqueaderoService;
+
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,9 +57,9 @@ public class VigilanteController {
 	
 	@GetMapping(value = "/obtenerParqueados")
 	@CrossOrigin
-	public String obtenerVehiculosParqueados()
+	public ResponseEntity<List<Parqueo>> obtenerVehiculosParqueados()
 	{
-		return "HOLA";
+		return null;
 	}
 	
 }
