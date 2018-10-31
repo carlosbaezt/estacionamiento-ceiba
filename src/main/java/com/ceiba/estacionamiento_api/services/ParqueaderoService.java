@@ -1,11 +1,14 @@
 package com.ceiba.estacionamiento_api.services;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 
+import com.ceiba.estacionamiento_api.dto.ParqueoDTO;
 import com.ceiba.estacionamiento_api.dto.VehiculoDTO;
 import com.ceiba.estacionamiento_api.enums.TipoVehiculo;
 import com.ceiba.estacionamiento_api.exceptions.VehiculoNoAdmitidoException;
@@ -116,9 +119,21 @@ public class ParqueaderoService {
 		return parqueoVehiculo.retirarParqueoPorPlaca(placa);
 	}
 	
-	public void obtenerVehiculosParqueados()
+	public List<ParqueoDTO> obtenerVehiculosParqueados()
 	{
+		List<ParqueoDTO> parqueosDTO = new ArrayList<>();
+		List<ParqueoEntity> parqueosEntity  = parqueoRepository.obtenerParqueosActivos();
 		
+		for(ParqueoEntity parqueoEntity : parqueosEntity )
+		{
+			ParqueoDTO parqueoDTO = new ParqueoDTO();
+			parqueoDTO.setFechaIngreso(parqueoEntity.getFechaIngreso());
+			parqueoDTO.setPlaca(parqueoEntity.getVehiculo().getPlaca());
+			parqueoDTO.setTipoVehiculo(parqueoEntity.getVehiculo().getTipoVehiculo().getNombre());
+			parqueosDTO.add(parqueoDTO);
+		}
+		
+		return parqueosDTO;		
 	}
 
 	public Calendar getCalendar() {

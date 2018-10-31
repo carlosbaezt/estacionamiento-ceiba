@@ -10,9 +10,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.ceiba.estacionamiento_api.dto.ParqueoDTO;
 import com.ceiba.estacionamiento_api.dto.VehiculoDTO;
 import com.ceiba.estacionamiento_api.exceptions.VehiculoNoAdmitidoException;
-import com.ceiba.estacionamiento_api.models.Parqueo;
 import com.ceiba.estacionamiento_api.services.ParqueaderoService;
 
 import java.util.List;
@@ -35,31 +36,30 @@ public class VigilanteController {
 	{
 		try {
 			parquederoService.ingresarVehiculo(vehiculoDTO);
+			return new ResponseEntity<>("OK", HttpStatus.OK);
 		} catch (VehiculoNoAdmitidoException exception) {
 			LOGGER.info("Error en /ingresarVehiculo",exception);
 			return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
 		}
-		
-		return new ResponseEntity<>("OK", HttpStatus.OK);
 	}
 	
 	@GetMapping(value = "/retirarVehiculo/{placa}")
 	@CrossOrigin
-	public ResponseEntity<Parqueo> retirarVehiculo(@PathVariable String placa)
+	public ResponseEntity<Object> retirarVehiculo(@PathVariable String placa)
 	{
 		try {
 			return new ResponseEntity<>(parquederoService.retirarVehiculo(placa), HttpStatus.OK ) ;
 		} catch (VehiculoNoAdmitidoException exception) {
 			LOGGER.info("Error en /retirarVehiculo",exception);
-			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST ) ;
+			return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST ) ;
 		}
 	}
 	
 	@GetMapping(value = "/obtenerParqueados")
 	@CrossOrigin
-	public ResponseEntity<List<Parqueo>> obtenerVehiculosParqueados()
+	public ResponseEntity<List<ParqueoDTO>> obtenerVehiculosParqueados()
 	{
-		return null;
+		return new ResponseEntity<>(parquederoService.obtenerVehiculosParqueados(), HttpStatus.OK );
 	}
 	
 }
