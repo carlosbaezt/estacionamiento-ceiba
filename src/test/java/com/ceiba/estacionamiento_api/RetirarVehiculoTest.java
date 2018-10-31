@@ -16,6 +16,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.MessageSource;
 import org.springframework.test.context.junit4.SpringRunner;
 import com.ceiba.estacionamiento_api.exceptions.VehiculoNoAdmitidoException;
+import com.ceiba.estacionamiento_api.persistence.entities.ParqueoEntity;
+import com.ceiba.estacionamiento_api.persistence.entities.VehiculoEntity;
 import com.ceiba.estacionamiento_api.services.ParqueaderoService;
 import com.ceiba.estacionamiento_api.services.impl.ParqueoCarro;
 import com.ceiba.estacionamiento_api.services.impl.ParqueoMoto;
@@ -51,11 +53,11 @@ public class RetirarVehiculoTest {
 	}
 	
 	@Test
-	public void valorParqueoMotoPorTiempoUnaHora()
+	public void valorParqueoMotoPorTiempoDosHoras()
 	{
 		//Arrange
 		Date fechaIngreso = new GregorianCalendar(2018,Calendar.OCTOBER,1,10,0,0).getTime();
-		Date fechaSalida = new GregorianCalendar(2018,Calendar.OCTOBER,1,11,0,0).getTime();
+		Date fechaSalida = new GregorianCalendar(2018,Calendar.OCTOBER,1,12,0,0).getTime();
 		
 		//Act
 		BigDecimal precioParqueo = parqueoMoto.calcularPrecioPorTiempo(
@@ -65,7 +67,7 @@ public class RetirarVehiculoTest {
 				ParqueoMoto.VALOR_HORA);
 		
 		//Assert
-		Assert.assertEquals(0, precioParqueo.compareTo(BigDecimal.valueOf(ParqueoMoto.VALOR_HORA)));
+		Assert.assertEquals(0, precioParqueo.compareTo(BigDecimal.valueOf(ParqueoMoto.VALOR_HORA * 2)));
 	}
 	
 	@Test
@@ -87,7 +89,7 @@ public class RetirarVehiculoTest {
 	}
 	
 	@Test
-	public void valorParqueoCarroPorTiempo27Horas()
+	public void valorParqueoCarroUnDiaTresHoras()
 	{
 		//Arrange
 		Date fechaIngreso = new GregorianCalendar(2018,Calendar.OCTOBER,1,8,0,0).getTime();
@@ -102,6 +104,27 @@ public class RetirarVehiculoTest {
 		
 		//Assert
 		Assert.assertEquals(0, precioParqueo.compareTo(BigDecimal.valueOf(11000)));
+	}
+	
+	@Test
+	public void valorParqueoMoto10Horas650Cilindraje()
+	{
+		//Arrange		
+		Date fechaIngreso = new GregorianCalendar(2018,Calendar.OCTOBER,1,10,0,0).getTime();
+		Date fechaSalida = new GregorianCalendar(2018,Calendar.OCTOBER,1,20,0,0).getTime();
+		
+		ParqueoEntity parqueoEntity = new ParqueoEntity();
+		parqueoEntity.setFechaIngreso(fechaIngreso);
+		parqueoEntity.setFechaSalida(fechaSalida);
+		VehiculoEntity vehiculoEntity = new VehiculoEntity();
+		vehiculoEntity.setCilindraje(650);
+		parqueoEntity.setVehiculo(vehiculoEntity);
+		
+		//Act
+		BigDecimal precioParqueo = parqueoMoto.valorParqueoMoto(parqueoEntity);
+		
+		//Assert
+		Assert.assertEquals(0, precioParqueo.compareTo(BigDecimal.valueOf(6000)));
 	}
 
 }

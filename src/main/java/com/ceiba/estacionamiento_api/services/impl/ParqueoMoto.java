@@ -18,10 +18,11 @@ import com.ceiba.estacionamiento_api.persistence.VehiculoRepository;
 import com.ceiba.estacionamiento_api.persistence.entities.ParqueoEntity;
 import com.ceiba.estacionamiento_api.persistence.entities.TipoVehiculoEntity;
 import com.ceiba.estacionamiento_api.persistence.entities.VehiculoEntity;
+import com.ceiba.estacionamiento_api.services.ParqueoMotoCobro;
 import com.ceiba.estacionamiento_api.services.ParqueoVehiculo;
 
 @Service
-public class ParqueoMoto implements ParqueoVehiculo {
+public class ParqueoMoto implements ParqueoVehiculo,ParqueoMotoCobro {
 	
 	public static final int TOTAL_ESPACIOS_DISPONIBLES = 10;
 	public static final int VALOR_DIA = 4000;
@@ -81,11 +82,17 @@ public class ParqueoMoto implements ParqueoVehiculo {
 	public Parqueo retirarParqueoPorPlaca(String placa) throws VehiculoNoAdmitidoException {
 		ParqueoEntity parqueoEntity = parqueoRepository.consultarParqueoActivoPorPlaca(placa);
 		parqueoEntity.setFechaSalida(new Date());
-		BigDecimal valorParqueo = calcularPrecioPorTiempo(parqueoEntity.getFechaIngreso(), parqueoEntity.getFechaSalida(), VALOR_DIA, VALOR_HORA);
-		valorParqueo = valorParqueo.add(valorAdicionalMayorCilidraje(parqueoEntity.getVehiculo().getCilindraje()));
+		BigDecimal valorParqueo = valorParqueoMoto(parqueoEntity);
 		parqueoEntity.setPrecio(valorParqueo);
 		parqueoRepository.save(parqueoEntity);
 		return parqueoEntity.toModel();
+	}
+	
+	@Override
+	public BigDecimal valorParqueoMoto(ParqueoEntity parqueoEntity) {
+		BigDecimal valorParqueo = calcularPrecioPorTiempo(parqueoEntity.getFechaIngreso(), parqueoEntity.getFechaSalida(), VALOR_DIA, VALOR_HORA);
+		valorParqueo = valorParqueo.add(valorAdicionalMayorCilidraje(parqueoEntity.getVehiculo().getCilindraje()));
+		return valorParqueo;
 	}
 	
 	private BigDecimal valorAdicionalMayorCilidraje(int cilindraje){
@@ -95,4 +102,5 @@ public class ParqueoMoto implements ParqueoVehiculo {
 		}
 		return valorAdicional;
 	}
+
 }
