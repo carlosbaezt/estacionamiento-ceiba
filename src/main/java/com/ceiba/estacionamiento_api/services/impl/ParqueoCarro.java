@@ -23,7 +23,7 @@ import com.ceiba.estacionamiento_api.services.ParqueoVehiculo;
 @Service
 public class ParqueoCarro implements ParqueoVehiculo {
 	
-	private static final int TOTAL_ESPACIOS_DISPONIBLES = 20;
+	public static final int TOTAL_ESPACIOS_DISPONIBLES = 20;
 	private static final int VALOR_DIA = 8000;
 	private static final int VALOR_HORA = 1000;
 	

@@ -1,7 +1,10 @@
 package com.ceiba.estacionamiento_api;
 
 import static org.junit.Assert.fail;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
@@ -18,7 +21,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.ceiba.estacionamiento_api.dto.VehiculoDTO;
 import com.ceiba.estacionamiento_api.enums.TipoVehiculo;
 import com.ceiba.estacionamiento_api.exceptions.VehiculoNoAdmitidoException;
+import com.ceiba.estacionamiento_api.models.Parqueo;
+import com.ceiba.estacionamiento_api.persistence.ParqueoRepository;
 import com.ceiba.estacionamiento_api.services.ParqueaderoService;
+import com.ceiba.estacionamiento_api.services.impl.ParqueoCarro;
+import com.ceiba.estacionamiento_api.services.impl.ParqueoMoto;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -133,6 +140,55 @@ public class IngresarVehiculoTest {
 			//Assert
 			Assert.assertEquals(e.getMessage(), messageSource.getMessage("vehiculo.invalidoPorDia",null,Locale.getDefault()));
 		}		
+	}
+	
+	@Test
+	public void guardarMasMotosDeCapacidadPermitida()
+	{
+		//Arrange		
+		vehiculoDTO = new VehiculoDTO();
+		vehiculoDTO.setPlaca("OLX123");
+		vehiculoDTO.setTipoVehiculo(TipoVehiculo.MOTO.getCodigo());
+		vehiculoDTO.setCilindraje(125);
+		
+		Parqueo parqueo = new Parqueo();		
+		parqueo.setVehiculo(vehiculoDTO.toModel());
+		
+		ParqueoRepository parqueoRepository = mock(ParqueoRepository.class);
+		
+		when(parqueoRepository.obtenerParqueosActivosPorTipoVehiculo(TipoVehiculo.MOTO.getCodigo())).thenReturn(ParqueoMoto.TOTAL_ESPACIOS_DISPONIBLES);
+		
+		try {
+			//Act
+			parquederoService.ingresarVehiculo(vehiculoDTO);
+		} catch (VehiculoNoAdmitidoException e) {
+			//Assert
+			Assert.assertEquals(e.getMessage(), messageSource.getMessage("parqueadero.sinEspacioDisponible",null,Locale.getDefault()));
+		}
+	}
+	
+	@Test
+	public void guardarMasCarrosDeCapacidadPermitida()
+	{
+		//Arrange		
+		vehiculoDTO = new VehiculoDTO();
+		vehiculoDTO.setPlaca("CBX123");
+		vehiculoDTO.setTipoVehiculo(TipoVehiculo.CARRO.getCodigo());
+		
+		Parqueo parqueo = new Parqueo();		
+		parqueo.setVehiculo(vehiculoDTO.toModel());
+		
+		ParqueoRepository parqueoRepository = mock(ParqueoRepository.class);
+		
+		when(parqueoRepository.obtenerParqueosActivosPorTipoVehiculo(TipoVehiculo.CARRO.getCodigo())).thenReturn(ParqueoCarro.TOTAL_ESPACIOS_DISPONIBLES);
+		
+		try {
+			//Act
+			parquederoService.ingresarVehiculo(vehiculoDTO);
+		} catch (VehiculoNoAdmitidoException e) {
+			//Assert
+			Assert.assertEquals(e.getMessage(), messageSource.getMessage("parqueadero.sinEspacioDisponible",null,Locale.getDefault()));
+		}
 	}
 
 }
