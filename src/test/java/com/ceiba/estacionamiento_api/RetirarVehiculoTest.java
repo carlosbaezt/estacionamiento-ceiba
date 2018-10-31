@@ -1,5 +1,7 @@
 package com.ceiba.estacionamiento_api;
 
+import static org.junit.Assert.fail;
+
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
@@ -15,6 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.MessageSource;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import com.ceiba.estacionamiento_api.dto.VehiculoDTO;
+import com.ceiba.estacionamiento_api.enums.TipoVehiculo;
 import com.ceiba.estacionamiento_api.exceptions.VehiculoNoAdmitidoException;
 import com.ceiba.estacionamiento_api.persistence.entities.ParqueoEntity;
 import com.ceiba.estacionamiento_api.persistence.entities.VehiculoEntity;
@@ -125,6 +130,45 @@ public class RetirarVehiculoTest {
 		
 		//Assert
 		Assert.assertEquals(0, precioParqueo.compareTo(BigDecimal.valueOf(6000)));
+	}
+	
+	@Test
+	public void retirarCarroIngresado()
+	{
+		//Arrange
+		VehiculoDTO vehiculoDTO = new VehiculoDTO();
+		vehiculoDTO.setPlaca("ZXC875");
+		vehiculoDTO.setTipoVehiculo(TipoVehiculo.CARRO.getCodigo());
+		
+		try {
+			//Act
+			parquederoService.ingresarVehiculo(vehiculoDTO);
+			parquederoService.retirarVehiculo(vehiculoDTO.getPlaca());
+			
+		} catch (VehiculoNoAdmitidoException e) {
+			//Assert
+			fail();
+		}		
+	}
+	
+	@Test
+	public void retirarMotoIngresada()
+	{
+		//Arrange
+		VehiculoDTO vehiculoDTO = new VehiculoDTO();
+		vehiculoDTO.setPlaca("UGD123");
+		vehiculoDTO.setTipoVehiculo(TipoVehiculo.MOTO.getCodigo());
+		vehiculoDTO.setCilindraje(200);
+		
+		try {
+			//Act
+			parquederoService.ingresarVehiculo(vehiculoDTO);
+			parquederoService.retirarVehiculo(vehiculoDTO.getPlaca());
+			
+		} catch (VehiculoNoAdmitidoException e) {
+			//Assert
+			fail();
+		}		
 	}
 
 }
