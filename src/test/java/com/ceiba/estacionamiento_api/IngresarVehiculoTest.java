@@ -192,12 +192,31 @@ public class IngresarVehiculoTest {
 	}
 	
 	@Test
-	public void ingresarVehiculoDosVeces()
+	public void ingresarVehiculoCarroDosVeces()
 	{
 		//Arrange
 		vehiculoDTO = new VehiculoDTO();
 		vehiculoDTO.setPlaca("NET456");
 		vehiculoDTO.setTipoVehiculo(TipoVehiculo.CARRO.getCodigo());
+		
+		try {
+			//Act
+			parquederoService.ingresarVehiculo(vehiculoDTO);
+			parquederoService.ingresarVehiculo(vehiculoDTO);
+			//Assert
+		} catch (VehiculoNoAdmitidoException e) {
+			Assert.assertEquals(e.getMessage(), messageSource.getMessage("vehiculo.actualmenteParqueado",null,Locale.getDefault()));
+		}		
+	}
+	
+	@Test
+	public void ingresarVehiculoMotoDosVeces()
+	{
+		//Arrange
+		vehiculoDTO = new VehiculoDTO();
+		vehiculoDTO.setPlaca("BUY123");
+		vehiculoDTO.setTipoVehiculo(TipoVehiculo.MOTO.getCodigo());
+		vehiculoDTO.setCilindraje(125);
 		
 		try {
 			//Act
