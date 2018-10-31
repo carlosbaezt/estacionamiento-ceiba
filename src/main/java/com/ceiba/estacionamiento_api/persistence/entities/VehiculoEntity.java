@@ -15,7 +15,7 @@ import com.ceiba.estacionamiento_api.models.Vehiculo;
 public class VehiculoEntity {
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
 	@Column(name ="placa", unique=true)

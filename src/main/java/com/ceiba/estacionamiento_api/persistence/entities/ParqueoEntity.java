@@ -17,7 +17,7 @@ import com.ceiba.estacionamiento_api.models.Parqueo;
 public class ParqueoEntity {
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
 	@ManyToOne
