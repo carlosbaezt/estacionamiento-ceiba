@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.ceiba.estacionamiento_api.models.Vehiculo;
+
 @Entity
 @Table(name = "vehiculo")
 public class VehiculoEntity {
@@ -55,6 +57,18 @@ public class VehiculoEntity {
 
 	public void setTipoVehiculo(TipoVehiculoEntity tipoVehiculo) {
 		this.tipoVehiculo = tipoVehiculo;
-	}	
+	}
+	
+	public Vehiculo toModel()
+	{
+		Vehiculo vehiculo = new Vehiculo();
+		if(this.cilindraje != null)
+		{
+			vehiculo.setCilindraje(this.cilindraje);
+		}
+		vehiculo.setPlaca(this.placa);
+		vehiculo.setTipoVehiculo(Math.toIntExact(this.tipoVehiculo.getId()));
+		return vehiculo;
+	}
 
 }

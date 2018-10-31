@@ -1,5 +1,4 @@
 package com.ceiba.estacionamiento_api.services;
-import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -65,6 +64,12 @@ public class ParqueaderoService {
 		}
 		
 		validarTipoVehiculo(vehiculoDTO.getTipoVehiculo());
+		
+		if(vehiculoDTO.getTipoVehiculo() == TipoVehiculo.MOTO.getCodigo()
+			&& vehiculoDTO.getCilindraje() == null)
+		{
+			throw new VehiculoNoAdmitidoException(messageSource.getMessage("vehiculo.cilindrajeNulo",null,Locale.getDefault()));
+		}
 	}
 	
 	private void validarTipoVehiculo(Integer tipoVehiculo) throws VehiculoNoAdmitidoException {
@@ -111,7 +116,7 @@ public class ParqueaderoService {
 	}
 	
 
-	public BigDecimal retirarVehiculo(String placa) throws VehiculoNoAdmitidoException
+	public Parqueo retirarVehiculo(String placa) throws VehiculoNoAdmitidoException
 	{
 		ParqueoEntity parqueoEntity = parqueoRepository.consultarParqueoActivoPorPlaca(placa);
 		if(parqueoEntity == null) {

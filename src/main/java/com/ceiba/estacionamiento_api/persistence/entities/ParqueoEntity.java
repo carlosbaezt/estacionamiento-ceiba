@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.ceiba.estacionamiento_api.models.Parqueo;
+
 @Entity
 @Table(name = "parqueo")
 public class ParqueoEntity {
@@ -69,4 +71,20 @@ public class ParqueoEntity {
 	public void setPrecio(BigDecimal precio) {
 		this.precio = precio;
 	}	
+	
+	public Parqueo toModel()
+	{
+		Parqueo parqueo = new Parqueo();
+		parqueo.setVehiculo(this.getVehiculo().toModel());
+		parqueo.setFechaIngreso(this.fechaIngreso);
+		if(this.fechaSalida != null)
+		{
+			parqueo.setFechaSalida(this.fechaSalida);
+		}
+		if(this.precio != null)
+		{
+			parqueo.setPrecio(this.precio);
+		}
+		return parqueo;
+	}
 }

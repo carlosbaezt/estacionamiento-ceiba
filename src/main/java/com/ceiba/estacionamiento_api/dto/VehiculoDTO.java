@@ -22,7 +22,7 @@ public class VehiculoDTO {
 	public void setPlaca(String placa) {
 		this.placa = placa;
 	}
-	public int getCilindraje() {
+	public Integer getCilindraje() {
 		return cilindraje;
 	}
 	public void setCilindraje(Integer cilindraje) {

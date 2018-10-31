@@ -75,13 +75,12 @@ public class ParqueoCarro implements ParqueoVehiculo {
 
 
 	@Override
-	public BigDecimal retirarParqueoPorPlaca(String placa) throws VehiculoNoAdmitidoException {
+	public Parqueo retirarParqueoPorPlaca(String placa) throws VehiculoNoAdmitidoException {
 		ParqueoEntity parqueoEntity = parqueoRepository.consultarParqueoActivoPorPlaca(placa);
 		parqueoEntity.setFechaSalida(new Date());
 		BigDecimal valorParqueo = calcularPrecioPorTiempo(parqueoEntity.getFechaIngreso(), parqueoEntity.getFechaSalida(), VALOR_DIA, VALOR_HORA);
 		parqueoEntity.setPrecio(valorParqueo);
 		parqueoRepository.save(parqueoEntity);
-		
-		return valorParqueo;
+		return parqueoEntity.toModel();
 	}
 }

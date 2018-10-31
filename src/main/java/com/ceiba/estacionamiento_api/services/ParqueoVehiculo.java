@@ -14,7 +14,7 @@ public interface ParqueoVehiculo {
 		
 	public void guardarParqueo(Parqueo parqueo) throws VehiculoNoAdmitidoException;
 	
-	public BigDecimal retirarParqueoPorPlaca(String placa) throws VehiculoNoAdmitidoException;
+	public Parqueo retirarParqueoPorPlaca(String placa) throws VehiculoNoAdmitidoException;
 	
 	default BigDecimal calcularPrecioPorTiempo(Date fechaIngreso, Date fechaSalida, double valorDia, double valorHora) {		
 		BigDecimal total         = new BigDecimal("0");
@@ -38,6 +38,5 @@ public interface ParqueoVehiculo {
 		}
 		
 		return total;
-		
 	}
 }

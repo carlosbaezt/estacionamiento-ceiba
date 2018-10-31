@@ -25,7 +25,7 @@ public class ParqueoMoto implements ParqueoVehiculo {
 	private static final int VALOR_DIA = 4000;
 	private static final int VALOR_HORA = 500;
 	private static final int CILIDRAJE_MAYOR_COBRO = 500;
-	private static final int VALOR_COBRO_MAYOR_CILIDRAJE = 2000;
+	private static final int VALOR_ADICIONAL_COBRO_MAYOR_CILIDRAJE = 2000;
 	
 	
 	@Autowired
@@ -38,7 +38,7 @@ public class ParqueoMoto implements ParqueoVehiculo {
 	TipoVehiculoRepository tipoVehiculoRepository ;
 
 	@Override
-	public boolean espacioDisponible() {
+	public boolean espacioDisponible(){
 		boolean espaciosDisponibles = false;
 		
 		Integer total = parqueoRepository.obtenerParqueosActivosPorTipoVehiculo(TipoVehiculo.MOTO.getCodigo());
@@ -51,23 +51,20 @@ public class ParqueoMoto implements ParqueoVehiculo {
 
 	@Override
 	public void guardarParqueo(Parqueo parqueo) throws VehiculoNoAdmitidoException {
-		if(!espacioDisponible())
-		{
+		if(!espacioDisponible()){
 			throw new VehiculoNoAdmitidoException("No hay espacios disponibles");
 		}
 		
 		VehiculoEntity vehiculoEntity = vehiculoRepository.findByPlacaIgnoreCase(parqueo.getVehiculo().getPlaca());
-		if(vehiculoEntity == null)
-		{
+		if(vehiculoEntity == null){
 			vehiculoEntity = new VehiculoEntity();
 			vehiculoEntity.setPlaca(parqueo.getVehiculo().getPlaca());
 			vehiculoEntity.setCilindraje(parqueo.getVehiculo().getCilindraje());
 			Optional<TipoVehiculoEntity> tipoVehiculoEntity = tipoVehiculoRepository.findById((long) TipoVehiculo.MOTO.getCodigo());
-			if(tipoVehiculoEntity.isPresent())
-			{
+			if(tipoVehiculoEntity.isPresent()){
 				vehiculoEntity.setTipoVehiculo(tipoVehiculoEntity.get());					
 			}
-
+			
 			vehiculoRepository.save(vehiculoEntity);
 		}
 		ParqueoEntity parqueoEntity = new ParqueoEntity();
@@ -77,18 +74,21 @@ public class ParqueoMoto implements ParqueoVehiculo {
 	}
 
 	@Override
-	public BigDecimal retirarParqueoPorPlaca(String placa) throws VehiculoNoAdmitidoException {
+	public Parqueo retirarParqueoPorPlaca(String placa) throws VehiculoNoAdmitidoException {
 		ParqueoEntity parqueoEntity = parqueoRepository.consultarParqueoActivoPorPlaca(placa);
 		parqueoEntity.setFechaSalida(new Date());
 		BigDecimal valorParqueo = calcularPrecioPorTiempo(parqueoEntity.getFechaIngreso(), parqueoEntity.getFechaSalida(), VALOR_DIA, VALOR_HORA);
-		if(parqueoEntity.getVehiculo().getCilindraje() > CILIDRAJE_MAYOR_COBRO)
-		{
-			valorParqueo = valorParqueo.add(BigDecimal.valueOf(VALOR_COBRO_MAYOR_CILIDRAJE));
-		}
+		valorParqueo = valorParqueo.add(valorAdicionalMayorCilidraje(parqueoEntity.getVehiculo().getCilindraje()));
 		parqueoEntity.setPrecio(valorParqueo);
 		parqueoRepository.save(parqueoEntity);
-		
-		return valorParqueo;
+		return parqueoEntity.toModel();
 	}
-
+	
+	private BigDecimal valorAdicionalMayorCilidraje(int cilindraje){
+		BigDecimal valorAdicional = new BigDecimal("0");
+		if(cilindraje > CILIDRAJE_MAYOR_COBRO){
+			valorAdicional = new BigDecimal(VALOR_ADICIONAL_COBRO_MAYOR_CILIDRAJE);
+		}
+		return valorAdicional;
+	}
 }
