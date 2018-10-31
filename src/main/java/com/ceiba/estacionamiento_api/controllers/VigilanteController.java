@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
 @RequestMapping("vigilante")
 public class VigilanteController {
 		
-	private static final Logger log = LoggerFactory.getLogger(VigilanteController.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(VigilanteController.class);
 	
 	@Autowired
 	ParqueaderoService parquederoService;
@@ -36,7 +36,7 @@ public class VigilanteController {
 		try {
 			parquederoService.ingresarVehiculo(vehiculoDTO);
 		} catch (VehiculoNoAdmitidoException e) {
-			log.info(e.getMessage());
+			LOGGER.info(e.getMessage());
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 		
@@ -50,7 +50,7 @@ public class VigilanteController {
 		try {
 			return new ResponseEntity<>(parquederoService.retirarVehiculo(placa), HttpStatus.OK ) ;
 		} catch (VehiculoNoAdmitidoException e) {
-			log.info(e.getMessage());
+			LOGGER.info(e.getMessage());
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST ) ;
 		}
 	}
