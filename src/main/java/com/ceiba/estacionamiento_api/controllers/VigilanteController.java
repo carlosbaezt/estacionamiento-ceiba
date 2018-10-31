@@ -35,9 +35,9 @@ public class VigilanteController {
 	{
 		try {
 			parquederoService.ingresarVehiculo(vehiculoDTO);
-		} catch (VehiculoNoAdmitidoException e) {
-			LOGGER.info(e.getMessage());
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		} catch (VehiculoNoAdmitidoException exception) {
+			LOGGER.info("Error en /ingresarVehiculo",exception);
+			return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 		
 		return new ResponseEntity<>("OK", HttpStatus.OK);
@@ -49,8 +49,8 @@ public class VigilanteController {
 	{
 		try {
 			return new ResponseEntity<>(parquederoService.retirarVehiculo(placa), HttpStatus.OK ) ;
-		} catch (VehiculoNoAdmitidoException e) {
-			LOGGER.info(e.getMessage());
+		} catch (VehiculoNoAdmitidoException exception) {
+			LOGGER.info("Error en /retirarVehiculo",exception);
 			return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST ) ;
 		}
 	}
