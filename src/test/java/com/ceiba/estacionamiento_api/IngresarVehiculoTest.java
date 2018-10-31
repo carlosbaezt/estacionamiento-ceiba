@@ -44,7 +44,7 @@ public class IngresarVehiculoTest {
 	public void vehiculoDTONulo()
 	{
 		//Arrange
-		
+		vehiculoDTO = null;
 		try {
 			//Act
 			parquederoService.ingresarVehiculo(vehiculoDTO);
@@ -112,7 +112,7 @@ public class IngresarVehiculoTest {
 		vehiculoDTO.setPlaca("ABC123");
 		vehiculoDTO.setTipoVehiculo(TipoVehiculo.CARRO.getCodigo());
 		
-		parquederoService.setCalendar(new GregorianCalendar(2018,9,29)); // Lunes, 29 de Octubre de 2018
+		parquederoService.setCalendar(new GregorianCalendar(2018,Calendar.OCTOBER,29)); // Lunes, 29 de Octubre de 2018
 		
 		try {
 			//Act
@@ -131,7 +131,7 @@ public class IngresarVehiculoTest {
 		vehiculoDTO.setPlaca("ABC123");
 		vehiculoDTO.setTipoVehiculo(TipoVehiculo.CARRO.getCodigo());
 		
-		parquederoService.setCalendar(new GregorianCalendar(2018,9,30)); // Martes, 30 de Octubre de 2018
+		parquederoService.setCalendar(new GregorianCalendar(2018,Calendar.OCTOBER,30)); // Martes, 30 de Octubre de 2018
 		
 		try {
 			//Act
@@ -203,8 +203,9 @@ public class IngresarVehiculoTest {
 			//Act
 			parquederoService.ingresarVehiculo(vehiculoDTO);
 			parquederoService.ingresarVehiculo(vehiculoDTO);
-			//Assert
+			
 		} catch (VehiculoNoAdmitidoException e) {
+			//Assert
 			Assert.assertEquals(e.getMessage(), messageSource.getMessage("vehiculo.actualmenteParqueado",null,Locale.getDefault()));
 		}		
 	}
@@ -222,8 +223,9 @@ public class IngresarVehiculoTest {
 			//Act
 			parquederoService.ingresarVehiculo(vehiculoDTO);
 			parquederoService.ingresarVehiculo(vehiculoDTO);
-			//Assert
+			
 		} catch (VehiculoNoAdmitidoException e) {
+			//Assert
 			Assert.assertEquals(e.getMessage(), messageSource.getMessage("vehiculo.actualmenteParqueado",null,Locale.getDefault()));
 		}		
 	}

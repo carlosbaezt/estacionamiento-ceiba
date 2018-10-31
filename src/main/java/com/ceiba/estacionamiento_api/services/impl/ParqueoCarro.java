@@ -24,8 +24,8 @@ import com.ceiba.estacionamiento_api.services.ParqueoVehiculo;
 public class ParqueoCarro implements ParqueoVehiculo {
 	
 	public static final int TOTAL_ESPACIOS_DISPONIBLES = 20;
-	private static final int VALOR_DIA = 8000;
-	private static final int VALOR_HORA = 1000;
+	public static final int VALOR_DIA = 8000;
+	public static final int VALOR_HORA = 1000;
 	
 	@Autowired
 	ParqueoRepository parqueoRepository;
