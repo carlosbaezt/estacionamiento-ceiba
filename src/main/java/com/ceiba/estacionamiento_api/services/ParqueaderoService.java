@@ -10,7 +10,6 @@ import com.ceiba.estacionamiento_api.dto.VehiculoDTO;
 import com.ceiba.estacionamiento_api.enums.TipoVehiculo;
 import com.ceiba.estacionamiento_api.exceptions.VehiculoNoAdmitidoException;
 import com.ceiba.estacionamiento_api.models.Parqueo;
-import com.ceiba.estacionamiento_api.models.Vehiculo;
 import com.ceiba.estacionamiento_api.persistence.ParqueoRepository;
 import com.ceiba.estacionamiento_api.persistence.entities.ParqueoEntity;
 import com.ceiba.estacionamiento_api.utils.Constantes;
@@ -27,27 +26,16 @@ public class ParqueaderoService {
 	@Autowired
 	private MessageSource messageSource;
 	
+	private Calendar calendar;
+	
 	
 	public void ingresarVehiculo(VehiculoDTO vehiculoDTO) throws VehiculoNoAdmitidoException
 	{
 		validarVehiculoDTO(vehiculoDTO);		
 		validarAccesoAlParqueadero(vehiculoDTO);
-				
-		//Se crea el factory de acuerdo al tipo de vehiculo
 		ParqueoVehiculo parqueoVehiculo = parqueoFactory.obtenerParqueo(vehiculoDTO.getTipoVehiculo());
-		
-		//Se guarda el vehiculo
-		Vehiculo vehiculo = new Vehiculo();
-		vehiculo.setPlaca(vehiculoDTO.getPlaca());
-		if(vehiculoDTO.getTipoVehiculo() == TipoVehiculo.MOTO.getCodigo())
-		{
-			vehiculo.setCilindraje(vehiculoDTO.getCilindraje());
-		}
-		
 		Parqueo parqueo = new Parqueo();
-		parqueo.setVehiculo(vehiculo);
-		
-		//Se guarda el parqueo
+		parqueo.setVehiculo(vehiculoDTO.toModel());
 		parqueoVehiculo.guardarParqueo(parqueo);
 	}
 
@@ -99,10 +87,9 @@ public class ParqueaderoService {
 	
 	private void placaNoValidaPorDia(String placa) throws VehiculoNoAdmitidoException
 	{
-		Calendar calendar = Calendar.getInstance();
-		int day = calendar.get(Calendar.DAY_OF_WEEK);
+		int day = getCalendar().get(Calendar.DAY_OF_WEEK);
 		
-		if(placa.charAt(0) != Constantes.LETRA_INICIAL_PLACA_NO_ADMITIDA)
+		if(Character.toUpperCase(placa.charAt(0)) != Character.toUpperCase(Constantes.LETRA_INICIAL_PLACA_NO_ADMITIDA))
 		{
 			return;
 		}
@@ -133,4 +120,18 @@ public class ParqueaderoService {
 	{
 		
 	}
+
+	public Calendar getCalendar() {
+		if(calendar == null)
+		{
+			calendar = Calendar.getInstance();			
+		}
+		return calendar;
+	}
+
+	public void setCalendar(Calendar calendar) {
+		this.calendar = calendar;
+	}
+	
+	
 }

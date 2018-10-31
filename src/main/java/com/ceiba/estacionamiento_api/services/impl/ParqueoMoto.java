@@ -2,9 +2,11 @@ package com.ceiba.estacionamiento_api.services.impl;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 import com.ceiba.estacionamiento_api.enums.TipoVehiculo;
@@ -27,7 +29,6 @@ public class ParqueoMoto implements ParqueoVehiculo {
 	private static final int CILIDRAJE_MAYOR_COBRO = 500;
 	private static final int VALOR_ADICIONAL_COBRO_MAYOR_CILIDRAJE = 2000;
 	
-	
 	@Autowired
 	ParqueoRepository parqueoRepository;
 	
@@ -36,6 +37,9 @@ public class ParqueoMoto implements ParqueoVehiculo {
 	
 	@Autowired
 	TipoVehiculoRepository tipoVehiculoRepository ;
+	
+	@Autowired
+	private MessageSource messageSource;
 
 	@Override
 	public boolean espacioDisponible(){
@@ -52,7 +56,7 @@ public class ParqueoMoto implements ParqueoVehiculo {
 	@Override
 	public void guardarParqueo(Parqueo parqueo) throws VehiculoNoAdmitidoException {
 		if(!espacioDisponible()){
-			throw new VehiculoNoAdmitidoException("No hay espacios disponibles");
+			throw new VehiculoNoAdmitidoException(messageSource.getMessage("parqueadero.sinEspacioDisponible",null,Locale.getDefault()));
 		}
 		
 		VehiculoEntity vehiculoEntity = vehiculoRepository.findByPlacaIgnoreCase(parqueo.getVehiculo().getPlaca());
