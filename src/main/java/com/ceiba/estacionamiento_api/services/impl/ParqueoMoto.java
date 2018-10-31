@@ -82,16 +82,16 @@ public class ParqueoMoto implements ParqueoVehiculo,ParqueoMotoCobro {
 	public Parqueo retirarParqueoPorPlaca(String placa) throws VehiculoNoAdmitidoException {
 		ParqueoEntity parqueoEntity = parqueoRepository.consultarParqueoActivoPorPlaca(placa);
 		parqueoEntity.setFechaSalida(new Date());
-		BigDecimal valorParqueo = valorParqueoMoto(parqueoEntity);
+		BigDecimal valorParqueo = valorParqueoMoto(parqueoEntity.toModel());
 		parqueoEntity.setPrecio(valorParqueo);
 		parqueoRepository.save(parqueoEntity);
 		return parqueoEntity.toModel();
 	}
 	
 	@Override
-	public BigDecimal valorParqueoMoto(ParqueoEntity parqueoEntity) {
-		BigDecimal valorParqueo = calcularPrecioPorTiempo(parqueoEntity.getFechaIngreso(), parqueoEntity.getFechaSalida(), VALOR_DIA, VALOR_HORA);
-		valorParqueo = valorParqueo.add(valorAdicionalMayorCilidraje(parqueoEntity.getVehiculo().getCilindraje()));
+	public BigDecimal valorParqueoMoto(Parqueo parqueo) {
+		BigDecimal valorParqueo = calcularPrecioPorTiempo(parqueo.getFechaIngreso(), parqueo.getFechaSalida(), VALOR_DIA, VALOR_HORA);
+		valorParqueo = valorParqueo.add(valorAdicionalMayorCilidraje(parqueo.getVehiculo().getCilindraje()));
 		return valorParqueo;
 	}
 	

@@ -2,10 +2,10 @@ package com.ceiba.estacionamiento_api.services;
 
 import java.math.BigDecimal;
 
-import com.ceiba.estacionamiento_api.persistence.entities.ParqueoEntity;
+import com.ceiba.estacionamiento_api.models.Parqueo;
 
 public interface ParqueoMotoCobro {
 	
-	public BigDecimal valorParqueoMoto(ParqueoEntity parqueoEntity);
+	public BigDecimal valorParqueoMoto(Parqueo parqueo);
 
 }

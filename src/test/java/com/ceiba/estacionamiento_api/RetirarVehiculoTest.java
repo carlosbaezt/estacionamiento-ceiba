@@ -21,8 +21,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.ceiba.estacionamiento_api.dto.VehiculoDTO;
 import com.ceiba.estacionamiento_api.enums.TipoVehiculo;
 import com.ceiba.estacionamiento_api.exceptions.VehiculoNoAdmitidoException;
-import com.ceiba.estacionamiento_api.persistence.entities.ParqueoEntity;
-import com.ceiba.estacionamiento_api.persistence.entities.VehiculoEntity;
+import com.ceiba.estacionamiento_api.models.Parqueo;
+import com.ceiba.estacionamiento_api.models.Vehiculo;
 import com.ceiba.estacionamiento_api.services.ParqueaderoService;
 import com.ceiba.estacionamiento_api.services.impl.ParqueoCarro;
 import com.ceiba.estacionamiento_api.services.impl.ParqueoMoto;
@@ -61,8 +61,11 @@ public class RetirarVehiculoTest {
 	public void valorParqueoMotoPorTiempoDosHoras()
 	{
 		//Arrange
-		Date fechaIngreso = new GregorianCalendar(2018,Calendar.OCTOBER,1,10,0,0).getTime();
-		Date fechaSalida = new GregorianCalendar(2018,Calendar.OCTOBER,1,12,0,0).getTime();
+		Calendar fechaIngresoPrevia = new GregorianCalendar(2018,Calendar.OCTOBER,1,10,0,0);
+		
+		Date fechaIngreso = fechaIngresoPrevia.getTime();
+		fechaIngresoPrevia.add(Calendar.HOUR, 2);
+		Date fechaSalida = fechaIngresoPrevia.getTime();
 		
 		//Act
 		BigDecimal precioParqueo = parqueoMoto.calcularPrecioPorTiempo(
@@ -79,8 +82,11 @@ public class RetirarVehiculoTest {
 	public void valorParqueoMotoPorTiempoNueveHoras()
 	{
 		//Arrange
-		Date fechaIngreso = new GregorianCalendar(2018,Calendar.OCTOBER,1,10,0,0).getTime();
-		Date fechaSalida = new GregorianCalendar(2018,Calendar.OCTOBER,1,19,0,0).getTime();
+		Calendar fechaIngresoPrevia = new GregorianCalendar(2018,Calendar.OCTOBER,1,10,0,0);
+		
+		Date fechaIngreso = fechaIngresoPrevia.getTime();
+		fechaIngresoPrevia.add(Calendar.HOUR, 9);
+		Date fechaSalida = fechaIngresoPrevia.getTime();
 		
 		//Act
 		BigDecimal precioParqueo = parqueoMoto.calcularPrecioPorTiempo(
@@ -97,8 +103,11 @@ public class RetirarVehiculoTest {
 	public void valorParqueoCarroUnDiaTresHoras()
 	{
 		//Arrange
-		Date fechaIngreso = new GregorianCalendar(2018,Calendar.OCTOBER,1,8,0,0).getTime();
-		Date fechaSalida = new GregorianCalendar(2018,Calendar.OCTOBER,2,11,0,0).getTime();
+		Calendar fechaIngresoPrevia = new GregorianCalendar(2018,Calendar.OCTOBER,1,10,0,0);
+		
+		Date fechaIngreso = fechaIngresoPrevia.getTime();
+		fechaIngresoPrevia.add(Calendar.HOUR, 27);
+		Date fechaSalida = fechaIngresoPrevia.getTime();
 		
 		//Act
 		BigDecimal precioParqueo = parqueoCarro.calcularPrecioPorTiempo(
@@ -114,19 +123,24 @@ public class RetirarVehiculoTest {
 	@Test
 	public void valorParqueoMoto10Horas650Cilindraje()
 	{
-		//Arrange		
-		Date fechaIngreso = new GregorianCalendar(2018,Calendar.OCTOBER,1,10,0,0).getTime();
-		Date fechaSalida = new GregorianCalendar(2018,Calendar.OCTOBER,1,20,0,0).getTime();
+		//Arrange
+		Calendar fechaIngresoPrevia = new GregorianCalendar(2018,Calendar.OCTOBER,1,10,0,0);
 		
-		ParqueoEntity parqueoEntity = new ParqueoEntity();
-		parqueoEntity.setFechaIngreso(fechaIngreso);
-		parqueoEntity.setFechaSalida(fechaSalida);
-		VehiculoEntity vehiculoEntity = new VehiculoEntity();
-		vehiculoEntity.setCilindraje(650);
-		parqueoEntity.setVehiculo(vehiculoEntity);
+		Date fechaIngreso = fechaIngresoPrevia.getTime();
+		fechaIngresoPrevia.add(Calendar.HOUR, 10);
+		Date fechaSalida = fechaIngresoPrevia.getTime();
+		
+		
+		Parqueo parqueo = new Parqueo();				
+		parqueo.setFechaIngreso(fechaIngreso);
+		parqueo.setFechaSalida(fechaSalida);
+		
+		Vehiculo vehiculo = new Vehiculo();
+		vehiculo.setCilindraje(650);
+		parqueo.setVehiculo(vehiculo);
 		
 		//Act
-		BigDecimal precioParqueo = parqueoMoto.valorParqueoMoto(parqueoEntity);
+		BigDecimal precioParqueo = parqueoMoto.valorParqueoMoto(parqueo);
 		
 		//Assert
 		Assert.assertEquals(0, precioParqueo.compareTo(BigDecimal.valueOf(6000)));
@@ -137,7 +151,7 @@ public class RetirarVehiculoTest {
 	{
 		//Arrange
 		VehiculoDTO vehiculoDTO = new VehiculoDTO();
-		vehiculoDTO.setPlaca("ZXC875");
+		vehiculoDTO.setPlaca(Utilidades.generarPlacaAleatoria());
 		vehiculoDTO.setTipoVehiculo(TipoVehiculo.CARRO.getCodigo());
 		
 		try {
@@ -156,7 +170,7 @@ public class RetirarVehiculoTest {
 	{
 		//Arrange
 		VehiculoDTO vehiculoDTO = new VehiculoDTO();
-		vehiculoDTO.setPlaca("UGD123");
+		vehiculoDTO.setPlaca(Utilidades.generarPlacaAleatoria());
 		vehiculoDTO.setTipoVehiculo(TipoVehiculo.MOTO.getCodigo());
 		vehiculoDTO.setCilindraje(200);
 		
