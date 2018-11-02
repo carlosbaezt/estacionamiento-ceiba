@@ -128,7 +128,7 @@ public class IngresarVehiculoTest {
 	{
 		//Arrange
 		vehiculoDTO = new VehiculoDTO();
-		vehiculoDTO.setPlaca("ABC123");
+		vehiculoDTO.setPlaca("AXX000");
 		vehiculoDTO.setTipoVehiculo(TipoVehiculo.CARRO.getCodigo());
 		
 		parquederoService.setCalendar(new GregorianCalendar(2018,Calendar.OCTOBER,30)); // Martes, 30 de Octubre de 2018

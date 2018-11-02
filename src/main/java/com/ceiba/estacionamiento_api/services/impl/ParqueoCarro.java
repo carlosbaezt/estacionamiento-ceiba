@@ -3,7 +3,6 @@ package com.ceiba.estacionamiento_api.services.impl;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -16,12 +15,10 @@ import com.ceiba.estacionamiento_api.persistence.ParqueoRepository;
 import com.ceiba.estacionamiento_api.persistence.TipoVehiculoRepository;
 import com.ceiba.estacionamiento_api.persistence.VehiculoRepository;
 import com.ceiba.estacionamiento_api.persistence.entities.ParqueoEntity;
-import com.ceiba.estacionamiento_api.persistence.entities.TipoVehiculoEntity;
-import com.ceiba.estacionamiento_api.persistence.entities.VehiculoEntity;
 import com.ceiba.estacionamiento_api.services.ParqueoVehiculo;
 
 @Service
-public class ParqueoCarro implements ParqueoVehiculo {
+public class ParqueoCarro extends ParqueoVehiculo {
 	
 	public static final int TOTAL_ESPACIOS_DISPONIBLES = 20;
 	public static final int VALOR_DIA = 8000;
@@ -39,43 +36,15 @@ public class ParqueoCarro implements ParqueoVehiculo {
 	@Autowired
 	private MessageSource messageSource;
 
-	@Override
-	public boolean espacioDisponible() {
-		boolean espaciosDisponibles = false;
-		
-		Integer total = parqueoRepository.obtenerParqueosActivosPorTipoVehiculo(TipoVehiculo.CARRO.getCodigo());
-		if(total < TOTAL_ESPACIOS_DISPONIBLES)
-		{
-			espaciosDisponibles =  true;
-		}
-		return espaciosDisponibles;
-	}
-
 
 	@Override
-	public void guardarParqueo(Parqueo parqueo) throws VehiculoNoAdmitidoException {
-		if(!espacioDisponible())
+	public void validarGuardarParqueo(Parqueo parqueo) throws VehiculoNoAdmitidoException {
+		if(!espacioDisponible(TipoVehiculo.CARRO.getCodigo(), TOTAL_ESPACIOS_DISPONIBLES))
 		{
 			throw new VehiculoNoAdmitidoException(messageSource.getMessage("parqueadero.sinEspacioDisponible",null,Locale.getDefault()));
 		}
 		
-		VehiculoEntity vehiculoEntity = vehiculoRepository.findByPlacaIgnoreCase(parqueo.getVehiculo().getPlaca());
-		if(vehiculoEntity == null)
-		{
-			vehiculoEntity = new VehiculoEntity();
-			vehiculoEntity.setPlaca(parqueo.getVehiculo().getPlaca());
-			Optional<TipoVehiculoEntity> tipoVehiculoEntity = tipoVehiculoRepository.findById((long) TipoVehiculo.CARRO.getCodigo());
-			if(tipoVehiculoEntity.isPresent())
-			{
-				vehiculoEntity.setTipoVehiculo(tipoVehiculoEntity.get());					
-			}
-
-			vehiculoRepository.save(vehiculoEntity);
-		}
-		ParqueoEntity parqueoEntity = new ParqueoEntity();
-		parqueoEntity.setFechaIngreso(new Date());
-		parqueoEntity.setVehiculo(vehiculoEntity);
-		parqueoRepository.save(parqueoEntity);
+		guardarParqueo(parqueo);
 	}
 
 
