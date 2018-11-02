@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.ceiba.estacionamiento_api.dto.ParqueoDTO;
@@ -14,10 +15,13 @@ import com.ceiba.estacionamiento_api.persistence.entities.ParqueoEntity;
 @Component
 public class ParqueoBuilder {
 	
+	@Autowired
+	VehiculoBuilder vehiculoBuilder;
+	
 	public Parqueo toModel(ParqueoEntity parqueoEntity)
 	{
 		Parqueo parqueo = new Parqueo();
-		parqueo.setVehiculo(parqueoEntity.getVehiculo().toModel());
+		parqueo.setVehiculo(vehiculoBuilder.toModel(parqueoEntity.getVehiculo()));
 		parqueo.setFechaIngreso(parqueoEntity.getFechaIngreso());
 		if(parqueoEntity.getFechaSalida() != null)
 		{
