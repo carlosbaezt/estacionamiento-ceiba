@@ -5,7 +5,7 @@ public class Utilidades {
 	private Utilidades()
 	{}
 	
-	private static final String LETRAS_PLACA_ADMITIDOS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	private static final String LETRAS_PLACA_ADMITIDOS = "BCDEFGHIJKLMNOPQRSTUVWXYZ";
 	
 	private static final String NUMEROS_PLACA_ADMITIDOS = "0123456789";
 	

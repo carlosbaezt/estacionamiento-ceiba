@@ -1,5 +1,6 @@
 package com.ceiba.estacionamiento_api.persistence.entities;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 import javax.persistence.Column;
@@ -10,12 +11,12 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.ceiba.estacionamiento_api.models.Parqueo;
-
 @Entity
 @Table(name = "parqueo")
-public class ParqueoEntity {
+public class ParqueoEntity implements Serializable{
 	
+	private static final long serialVersionUID = -3136563479975273538L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
@@ -70,21 +71,5 @@ public class ParqueoEntity {
 
 	public void setPrecio(BigDecimal precio) {
 		this.precio = precio;
-	}	
-	
-	public Parqueo toModel()
-	{
-		Parqueo parqueo = new Parqueo();
-		parqueo.setVehiculo(this.getVehiculo().toModel());
-		parqueo.setFechaIngreso(this.fechaIngreso);
-		if(this.fechaSalida != null)
-		{
-			parqueo.setFechaSalida(this.fechaSalida);
-		}
-		if(this.precio != null)
-		{
-			parqueo.setPrecio(this.precio);
-		}
-		return parqueo;
 	}
 }

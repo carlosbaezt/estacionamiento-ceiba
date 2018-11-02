@@ -14,6 +14,7 @@ import com.ceiba.estacionamiento_api.models.Parqueo;
 import com.ceiba.estacionamiento_api.persistence.ParqueoRepository;
 import com.ceiba.estacionamiento_api.persistence.TipoVehiculoRepository;
 import com.ceiba.estacionamiento_api.persistence.VehiculoRepository;
+import com.ceiba.estacionamiento_api.persistence.builder.ParqueoBuilder;
 import com.ceiba.estacionamiento_api.persistence.entities.ParqueoEntity;
 import com.ceiba.estacionamiento_api.services.ParqueoVehiculo;
 
@@ -35,6 +36,9 @@ public class ParqueoCarro extends ParqueoVehiculo {
 	
 	@Autowired
 	private MessageSource messageSource;
+	
+	@Autowired
+	private ParqueoBuilder parqueoBuilder;
 
 
 	@Override
@@ -55,6 +59,6 @@ public class ParqueoCarro extends ParqueoVehiculo {
 		BigDecimal valorParqueo = calcularPrecioPorTiempo(parqueoEntity.getFechaIngreso(), parqueoEntity.getFechaSalida(), VALOR_DIA, VALOR_HORA);
 		parqueoEntity.setPrecio(valorParqueo);
 		parqueoRepository.save(parqueoEntity);
-		return parqueoEntity.toModel();
+		return parqueoBuilder.toModel(parqueoEntity);
 	}
 }

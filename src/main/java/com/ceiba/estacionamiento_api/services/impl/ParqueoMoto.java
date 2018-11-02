@@ -13,6 +13,7 @@ import com.ceiba.estacionamiento_api.exceptions.VehiculoNoAdmitidoException;
 import com.ceiba.estacionamiento_api.models.Parqueo;
 import com.ceiba.estacionamiento_api.persistence.ParqueoRepository;
 import com.ceiba.estacionamiento_api.persistence.VehiculoRepository;
+import com.ceiba.estacionamiento_api.persistence.builder.ParqueoBuilder;
 import com.ceiba.estacionamiento_api.persistence.entities.ParqueoEntity;
 import com.ceiba.estacionamiento_api.services.ParqueoMotoCobro;
 import com.ceiba.estacionamiento_api.services.ParqueoVehiculo;
@@ -32,9 +33,11 @@ public class ParqueoMoto extends ParqueoVehiculo implements ParqueoMotoCobro {
 	@Autowired
 	VehiculoRepository vehiculoRepository;
 	
-	
 	@Autowired
 	private MessageSource messageSource;
+	
+	@Autowired
+	private ParqueoBuilder parqueoBuilder;
 
 	@Override
 	public void validarGuardarParqueo(Parqueo parqueo) throws VehiculoNoAdmitidoException {
@@ -49,10 +52,10 @@ public class ParqueoMoto extends ParqueoVehiculo implements ParqueoMotoCobro {
 	public Parqueo retirarParqueoPorPlaca(String placa) throws VehiculoNoAdmitidoException {
 		ParqueoEntity parqueoEntity = parqueoRepository.consultarParqueoActivoPorPlaca(placa);
 		parqueoEntity.setFechaSalida(new Date());
-		BigDecimal valorParqueo = valorParqueoMoto(parqueoEntity.toModel());
+		BigDecimal valorParqueo = valorParqueoMoto(parqueoBuilder.toModel(parqueoEntity));
 		parqueoEntity.setPrecio(valorParqueo);
 		parqueoRepository.save(parqueoEntity);
-		return parqueoEntity.toModel();
+		return parqueoBuilder.toModel(parqueoEntity);
 	}
 	
 	@Override

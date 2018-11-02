@@ -32,6 +32,10 @@ public abstract class ParqueoVehiculo {
 	@Autowired
 	private VehiculoRepository vehiculoRepository ;
 	
+	public abstract void validarGuardarParqueo(Parqueo parqueo) throws VehiculoNoAdmitidoException;
+	
+	public abstract Parqueo retirarParqueoPorPlaca(String placa) throws VehiculoNoAdmitidoException;
+	
 	public boolean espacioDisponible(int tipoVehiculo, int cantidadEspaciosDisponibles){
 		boolean espaciosDisponibles = false;
 		
@@ -42,10 +46,6 @@ public abstract class ParqueoVehiculo {
 		}
 		return espaciosDisponibles;
 	}
-		
-	public abstract void validarGuardarParqueo(Parqueo parqueo) throws VehiculoNoAdmitidoException;
-	
-	public abstract Parqueo retirarParqueoPorPlaca(String placa) throws VehiculoNoAdmitidoException;
 	
 	public void guardarParqueo(Parqueo parqueo)
 	{
@@ -79,9 +79,6 @@ public abstract class ParqueoVehiculo {
 		
 		return total;
 	}
-	
-	
-	
 	
 	public VehiculoEntity guardarVehiculo(Vehiculo vehiculo)
 	{

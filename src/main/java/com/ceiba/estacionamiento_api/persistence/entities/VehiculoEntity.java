@@ -1,5 +1,7 @@
 package com.ceiba.estacionamiento_api.persistence.entities;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,8 +14,10 @@ import com.ceiba.estacionamiento_api.models.Vehiculo;
 
 @Entity
 @Table(name = "vehiculo")
-public class VehiculoEntity {
+public class VehiculoEntity implements Serializable{
 	
+	private static final long serialVersionUID = 3260652763444011117L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;

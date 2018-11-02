@@ -1,7 +1,4 @@
 package com.ceiba.estacionamiento_api.services;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -16,6 +13,7 @@ import com.ceiba.estacionamiento_api.enums.TipoVehiculo;
 import com.ceiba.estacionamiento_api.exceptions.VehiculoNoAdmitidoException;
 import com.ceiba.estacionamiento_api.models.Parqueo;
 import com.ceiba.estacionamiento_api.persistence.ParqueoRepository;
+import com.ceiba.estacionamiento_api.persistence.builder.ParqueoBuilder;
 import com.ceiba.estacionamiento_api.persistence.entities.ParqueoEntity;
 import com.ceiba.estacionamiento_api.utils.Constantes;
 
@@ -31,6 +29,9 @@ public class ParqueaderoService {
 	@Autowired
 	private MessageSource messageSource;
 	
+	@Autowired
+	private ParqueoBuilder parqueoBuilder;
+	
 	private Calendar calendar;
 	
 	
@@ -45,7 +46,12 @@ public class ParqueaderoService {
 	}
 
 	private void validarVehiculoDTO(VehiculoDTO vehiculoDTO) throws VehiculoNoAdmitidoException {
-
+		validarVehiculoDTONull(vehiculoDTO);		
+		validarTipoVehiculo(vehiculoDTO.getTipoVehiculo());
+	}
+	
+	private void validarVehiculoDTONull(VehiculoDTO vehiculoDTO) throws VehiculoNoAdmitidoException
+	{
 		if(vehiculoDTO == null)
 		{
 			throw new VehiculoNoAdmitidoException(messageSource.getMessage("vehiculo.nulo",null,Locale.getDefault()));
@@ -56,10 +62,8 @@ public class ParqueaderoService {
 			throw new VehiculoNoAdmitidoException(messageSource.getMessage("vehiculo.placaNula",null,Locale.getDefault()));
 		}
 		
-		validarTipoVehiculo(vehiculoDTO.getTipoVehiculo());
-		
 		if(vehiculoDTO.getTipoVehiculo() == TipoVehiculo.MOTO.getCodigo()
-			&& vehiculoDTO.getCilindraje() == null)
+				&& vehiculoDTO.getCilindraje() == null)
 		{
 			throw new VehiculoNoAdmitidoException(messageSource.getMessage("vehiculo.cilindrajeNulo",null,Locale.getDefault()));
 		}
@@ -123,20 +127,8 @@ public class ParqueaderoService {
 	
 	public List<ParqueoDTO> obtenerVehiculosParqueados()
 	{
-		List<ParqueoDTO> parqueosDTO = new ArrayList<>();
 		List<ParqueoEntity> parqueosEntity  = parqueoRepository.obtenerParqueosActivos();
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
-		
-		for(ParqueoEntity parqueoEntity : parqueosEntity )
-		{
-			ParqueoDTO parqueoDTO = new ParqueoDTO();
-			parqueoDTO.setFechaIngreso(dateFormat.format(parqueoEntity.getFechaIngreso()));
-			parqueoDTO.setPlaca(parqueoEntity.getVehiculo().getPlaca());
-			parqueoDTO.setTipoVehiculo(parqueoEntity.getVehiculo().getTipoVehiculo().getNombre());
-			parqueosDTO.add(parqueoDTO);
-		}
-		
-		return parqueosDTO;		
+		return parqueoBuilder.toDTOs(parqueosEntity);	
 	}
 
 	public Calendar getCalendar() {
