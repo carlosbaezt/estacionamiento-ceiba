@@ -32,7 +32,7 @@ public abstract class ParqueoVehiculo {
 	@Autowired
 	private VehiculoRepository vehiculoRepository ;
 	
-	public abstract void validarGuardarParqueo(Parqueo parqueo) throws VehiculoNoAdmitidoException;
+	public abstract void guardarParqueo(Parqueo parqueo) throws VehiculoNoAdmitidoException;
 	
 	public abstract Parqueo retirarParqueoPorPlaca(String placa) throws VehiculoNoAdmitidoException;
 	
@@ -47,9 +47,9 @@ public abstract class ParqueoVehiculo {
 		return espaciosDisponibles;
 	}
 	
-	public void guardarParqueo(Parqueo parqueo)
+	public void guardarParqueoVehiculo(Parqueo parqueo)
 	{
-		VehiculoEntity vehiculoEntity = guardarVehiculo(parqueo.getVehiculo());
+		VehiculoEntity vehiculoEntity = generarVehiculo(parqueo.getVehiculo());
 		ParqueoEntity parqueoEntity = new ParqueoEntity();
 		parqueoEntity.setFechaIngreso(new Date());
 		parqueoEntity.setVehiculo(vehiculoEntity);
@@ -80,7 +80,7 @@ public abstract class ParqueoVehiculo {
 		return total;
 	}
 	
-	public VehiculoEntity guardarVehiculo(Vehiculo vehiculo)
+	public VehiculoEntity generarVehiculo(Vehiculo vehiculo)
 	{
 		VehiculoEntity vehiculoEntity = vehiculoRepository.findByPlacaIgnoreCase(vehiculo.getPlaca());
 		if(vehiculoEntity == null)

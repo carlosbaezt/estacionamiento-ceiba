@@ -40,15 +40,13 @@ public class ParqueoCarro extends ParqueoVehiculo {
 	@Autowired
 	private ParqueoBuilder parqueoBuilder;
 
-
 	@Override
-	public void validarGuardarParqueo(Parqueo parqueo) throws VehiculoNoAdmitidoException {
-		if(!espacioDisponible(TipoVehiculo.CARRO.getCodigo(), TOTAL_ESPACIOS_DISPONIBLES))
-		{
+	public void guardarParqueo(Parqueo parqueo) throws VehiculoNoAdmitidoException {
+		if(!espacioDisponible(TipoVehiculo.CARRO.getCodigo(), TOTAL_ESPACIOS_DISPONIBLES)){
 			throw new VehiculoNoAdmitidoException(messageSource.getMessage("parqueadero.sinEspacioDisponible",null,Locale.getDefault()));
 		}
 		
-		guardarParqueo(parqueo);
+		guardarParqueoVehiculo(parqueo);
 	}
 
 
