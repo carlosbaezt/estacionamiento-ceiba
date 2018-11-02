@@ -40,12 +40,12 @@ public class ParqueoMoto extends ParqueoVehiculo implements ParqueoMotoCobro {
 	private ParqueoBuilder parqueoBuilder;
 
 	@Override
-	public void validarGuardarParqueo(Parqueo parqueo) throws VehiculoNoAdmitidoException {
+	public void guardarParqueo(Parqueo parqueo) throws VehiculoNoAdmitidoException {
 		if(!espacioDisponible(TipoVehiculo.MOTO.getCodigo(), TOTAL_ESPACIOS_DISPONIBLES)) {
 			throw new VehiculoNoAdmitidoException(messageSource.getMessage("parqueadero.sinEspacioDisponible",null,Locale.getDefault()));
 		}
 		
-		guardarParqueo(parqueo);
+		guardarParqueoVehiculo(parqueo);
 	}
 
 	@Override

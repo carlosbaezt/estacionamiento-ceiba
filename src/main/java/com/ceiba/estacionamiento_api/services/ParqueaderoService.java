@@ -142,6 +142,4 @@ public class ParqueaderoService {
 	public void setCalendar(Calendar calendar) {
 		this.calendar = calendar;
 	}
-	
-	
 }
