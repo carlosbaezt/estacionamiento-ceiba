@@ -5,10 +5,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import com.ceiba.estacionamiento_api.dto.ParqueoDTO;
 import com.ceiba.estacionamiento_api.models.Parqueo;
 import com.ceiba.estacionamiento_api.persistence.entities.ParqueoEntity;
 
+@Component
 public class ParqueoBuilder {
 	
 	public Parqueo toModel(ParqueoEntity parqueoEntity)
