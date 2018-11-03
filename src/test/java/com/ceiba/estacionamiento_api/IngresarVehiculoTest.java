@@ -1,7 +1,6 @@
 package com.ceiba.estacionamiento_api;
 
 import static org.junit.Assert.fail;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.util.Calendar;
@@ -13,8 +12,10 @@ import javax.annotation.Resource;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.MessageSource;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -39,6 +40,8 @@ public class IngresarVehiculoTest {
 	@Resource
 	private MessageSource messageSource;
 	
+	@MockBean
+	ParqueoRepository parqueoRepository;
 	
 	@Test
 	public void vehiculoDTONulo()
@@ -48,6 +51,7 @@ public class IngresarVehiculoTest {
 		try {
 			//Act
 			parquederoService.ingresarVehiculo(vehiculoDTO);
+			fail();
 		} catch (VehiculoNoAdmitidoException e) {
 			//Assert
 			Assert.assertEquals(e.getMessage(), messageSource.getMessage("vehiculo.nulo",null,Locale.getDefault()));
@@ -64,6 +68,7 @@ public class IngresarVehiculoTest {
 		try {
 			//Act
 			parquederoService.ingresarVehiculo(vehiculoDTO);
+			fail();
 		} catch (VehiculoNoAdmitidoException e) {
 			//Assert
 			Assert.assertEquals(e.getMessage(), messageSource.getMessage("vehiculo.placaNula",null,Locale.getDefault()));
@@ -81,6 +86,7 @@ public class IngresarVehiculoTest {
 		try {
 			//Act
 			parquederoService.ingresarVehiculo(vehiculoDTO);
+			fail();
 		} catch (VehiculoNoAdmitidoException e) {
 			//Assert
 			Assert.assertEquals(e.getMessage(), messageSource.getMessage("vehiculo.tipoVehiculoInvalido",null,Locale.getDefault()));
@@ -98,6 +104,7 @@ public class IngresarVehiculoTest {
 		try {
 			//Act
 			parquederoService.ingresarVehiculo(vehiculoDTO);
+			fail();
 		} catch (VehiculoNoAdmitidoException e) {
 			//Assert
 			Assert.assertEquals(e.getMessage(), messageSource.getMessage("vehiculo.cilindrajeNulo",null,Locale.getDefault()));
@@ -136,6 +143,7 @@ public class IngresarVehiculoTest {
 		try {
 			//Act
 			parquederoService.ingresarVehiculo(vehiculoDTO);
+			fail();
 		} catch (VehiculoNoAdmitidoException e) {
 			//Assert
 			Assert.assertEquals(e.getMessage(), messageSource.getMessage("vehiculo.invalidoPorDia",null,Locale.getDefault()));
@@ -153,14 +161,13 @@ public class IngresarVehiculoTest {
 		
 		Parqueo parqueo = new Parqueo();		
 		parqueo.setVehiculo(vehiculoDTO.toModel());
-		
-		ParqueoRepository parqueoRepository = mock(ParqueoRepository.class);
-		
-		when(parqueoRepository.obtenerParqueosActivosPorTipoVehiculo(TipoVehiculo.MOTO.getCodigo())).thenReturn(ParqueoMoto.TOTAL_ESPACIOS_DISPONIBLES);
+				
+		Mockito.when(parqueoRepository.obtenerParqueosActivosPorTipoVehiculo(TipoVehiculo.MOTO.getCodigo())).thenReturn(ParqueoMoto.TOTAL_ESPACIOS_DISPONIBLES);
 		
 		try {
 			//Act
 			parquederoService.ingresarVehiculo(vehiculoDTO);
+			fail();
 		} catch (VehiculoNoAdmitidoException e) {
 			//Assert
 			Assert.assertEquals(e.getMessage(), messageSource.getMessage("parqueadero.sinEspacioDisponible",null,Locale.getDefault()));
@@ -178,56 +185,15 @@ public class IngresarVehiculoTest {
 		Parqueo parqueo = new Parqueo();		
 		parqueo.setVehiculo(vehiculoDTO.toModel());
 		
-		ParqueoRepository parqueoRepository = mock(ParqueoRepository.class);
-		
 		when(parqueoRepository.obtenerParqueosActivosPorTipoVehiculo(TipoVehiculo.CARRO.getCodigo())).thenReturn(ParqueoCarro.TOTAL_ESPACIOS_DISPONIBLES);
 		
 		try {
 			//Act
 			parquederoService.ingresarVehiculo(vehiculoDTO);
+			fail();
 		} catch (VehiculoNoAdmitidoException e) {
 			//Assert
 			Assert.assertEquals(e.getMessage(), messageSource.getMessage("parqueadero.sinEspacioDisponible",null,Locale.getDefault()));
 		}
 	}
-	
-	@Test
-	public void ingresarVehiculoCarroDosVeces()
-	{
-		//Arrange
-		vehiculoDTO = new VehiculoDTO();
-		vehiculoDTO.setPlaca("NET456");
-		vehiculoDTO.setTipoVehiculo(TipoVehiculo.CARRO.getCodigo());
-		
-		try {
-			//Act
-			parquederoService.ingresarVehiculo(vehiculoDTO);
-			parquederoService.ingresarVehiculo(vehiculoDTO);
-			
-		} catch (VehiculoNoAdmitidoException e) {
-			//Assert
-			Assert.assertEquals(e.getMessage(), messageSource.getMessage("vehiculo.actualmenteParqueado",null,Locale.getDefault()));
-		}		
-	}
-	
-	@Test
-	public void ingresarVehiculoMotoDosVeces()
-	{
-		//Arrange
-		vehiculoDTO = new VehiculoDTO();
-		vehiculoDTO.setPlaca("BUY123");
-		vehiculoDTO.setTipoVehiculo(TipoVehiculo.MOTO.getCodigo());
-		vehiculoDTO.setCilindraje(125);
-		
-		try {
-			//Act
-			parquederoService.ingresarVehiculo(vehiculoDTO);
-			parquederoService.ingresarVehiculo(vehiculoDTO);
-			
-		} catch (VehiculoNoAdmitidoException e) {
-			//Assert
-			Assert.assertEquals(e.getMessage(), messageSource.getMessage("vehiculo.actualmenteParqueado",null,Locale.getDefault()));
-		}		
-	}
-
 }

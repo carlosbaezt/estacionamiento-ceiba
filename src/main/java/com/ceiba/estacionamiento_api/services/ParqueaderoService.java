@@ -22,7 +22,7 @@ public class ParqueaderoService {
 	
 	@Autowired
 	ParqueoRepository parqueoRepository;
-	
+
 	@Autowired
 	ParqueoFactory parqueoFactory;
 	
