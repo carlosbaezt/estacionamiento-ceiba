@@ -9,16 +9,6 @@ public class VehiculoDTO {
 	private Integer cilindraje;
 	private Integer tipoVehiculo;
 	
-	public VehiculoDTO()
-	{}
-	
-	public VehiculoDTO(String placa, Integer cilindraje, Integer tipoVehiculo) {
-		super();
-		this.placa = placa;
-		this.cilindraje = cilindraje;
-		this.tipoVehiculo = tipoVehiculo;
-	}
-	
 	public String getPlaca() {
 		return placa;
 	}
