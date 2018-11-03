@@ -50,7 +50,7 @@ public class IngresarVehiculoTest {
 		vehiculoDTO = null;
 		try {
 			//Act
-			parquederoService.ingresarVehiculo(vehiculoDTO);
+			parquederoService.validarVehiculoDTONull(vehiculoDTO);
 			fail();
 		} catch (VehiculoNoAdmitidoException e) {
 			//Assert
@@ -67,7 +67,7 @@ public class IngresarVehiculoTest {
 		
 		try {
 			//Act
-			parquederoService.ingresarVehiculo(vehiculoDTO);
+			parquederoService.validarVehiculoDTONull(vehiculoDTO);
 			fail();
 		} catch (VehiculoNoAdmitidoException e) {
 			//Assert
@@ -85,7 +85,7 @@ public class IngresarVehiculoTest {
 		
 		try {
 			//Act
-			parquederoService.ingresarVehiculo(vehiculoDTO);
+			parquederoService.validarTipoVehiculo(vehiculoDTO.getTipoVehiculo());
 			fail();
 		} catch (VehiculoNoAdmitidoException e) {
 			//Assert
@@ -103,7 +103,7 @@ public class IngresarVehiculoTest {
 		
 		try {
 			//Act
-			parquederoService.ingresarVehiculo(vehiculoDTO);
+			parquederoService.validarCilindraje(vehiculoDTO);
 			fail();
 		} catch (VehiculoNoAdmitidoException e) {
 			//Assert
@@ -123,7 +123,7 @@ public class IngresarVehiculoTest {
 		
 		try {
 			//Act
-			parquederoService.ingresarVehiculo(vehiculoDTO);
+			parquederoService.validarAccesoAlParqueadero(vehiculoDTO);
 			//Assert
 		} catch (VehiculoNoAdmitidoException e) {
 			fail();
@@ -142,7 +142,7 @@ public class IngresarVehiculoTest {
 		
 		try {
 			//Act
-			parquederoService.ingresarVehiculo(vehiculoDTO);
+			parquederoService.validarAccesoAlParqueadero(vehiculoDTO);
 			fail();
 		} catch (VehiculoNoAdmitidoException e) {
 			//Assert

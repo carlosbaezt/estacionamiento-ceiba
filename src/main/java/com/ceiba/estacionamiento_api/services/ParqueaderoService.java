@@ -37,7 +37,7 @@ public class ParqueaderoService {
 	
 	public void ingresarVehiculo(VehiculoDTO vehiculoDTO) throws VehiculoNoAdmitidoException
 	{
-		validarVehiculoDTO(vehiculoDTO);		
+		validarVehiculoDTO(vehiculoDTO);
 		validarAccesoAlParqueadero(vehiculoDTO);
 		ParqueoVehiculo parqueoVehiculo = parqueoFactory.obtenerParqueo(vehiculoDTO.getTipoVehiculo());
 		Parqueo parqueo = new Parqueo();
@@ -48,9 +48,10 @@ public class ParqueaderoService {
 	private void validarVehiculoDTO(VehiculoDTO vehiculoDTO) throws VehiculoNoAdmitidoException {
 		validarVehiculoDTONull(vehiculoDTO);		
 		validarTipoVehiculo(vehiculoDTO.getTipoVehiculo());
+		validarCilindraje(vehiculoDTO);
 	}
 	
-	private void validarVehiculoDTONull(VehiculoDTO vehiculoDTO) throws VehiculoNoAdmitidoException
+	public void validarVehiculoDTONull(VehiculoDTO vehiculoDTO) throws VehiculoNoAdmitidoException
 	{
 		if(vehiculoDTO == null)
 		{
@@ -61,15 +62,18 @@ public class ParqueaderoService {
 		{
 			throw new VehiculoNoAdmitidoException(messageSource.getMessage("vehiculo.placaNula",null,Locale.getDefault()));
 		}
-		
+	}
+	
+	public void validarCilindraje(VehiculoDTO vehiculoDTO) throws VehiculoNoAdmitidoException
+	{
 		if(vehiculoDTO.getTipoVehiculo() == TipoVehiculo.MOTO.getCodigo()
 				&& vehiculoDTO.getCilindraje() == null)
 		{
 			throw new VehiculoNoAdmitidoException(messageSource.getMessage("vehiculo.cilindrajeNulo",null,Locale.getDefault()));
-		}
+		}		
 	}
 	
-	private void validarTipoVehiculo(Integer tipoVehiculo) throws VehiculoNoAdmitidoException {
+	public void validarTipoVehiculo(Integer tipoVehiculo) throws VehiculoNoAdmitidoException {
 		if(tipoVehiculo == null){
 			throw new VehiculoNoAdmitidoException(messageSource.getMessage("vehiculo.tipoVehiculoNulo",null,Locale.getDefault()));
 		}
@@ -84,15 +88,18 @@ public class ParqueaderoService {
 		
 	}
 	
-	private void validarAccesoAlParqueadero(VehiculoDTO vehiculoDTO) throws VehiculoNoAdmitidoException
+	public void validarAccesoAlParqueadero(VehiculoDTO vehiculoDTO) throws VehiculoNoAdmitidoException
 	{
-		if(parqueoRepository.consultarParqueoActivoPorPlaca(vehiculoDTO.getPlaca()) != null) {
-			throw new VehiculoNoAdmitidoException(messageSource.getMessage("vehiculo.actualmenteParqueado",null,Locale.getDefault()));
-		}
-		
+		validarVehiculoYaParqueado(vehiculoDTO.getPlaca());
 		placaNoValidaPorDia(vehiculoDTO.getPlaca());
 	}
 	
+	private void validarVehiculoYaParqueado(String placa) throws VehiculoNoAdmitidoException
+	{
+		if(parqueoRepository.consultarParqueoActivoPorPlaca(placa) != null) {
+			throw new VehiculoNoAdmitidoException(messageSource.getMessage("vehiculo.actualmenteParqueado",null,Locale.getDefault()));
+		}
+	}
 	
 	private void placaNoValidaPorDia(String placa) throws VehiculoNoAdmitidoException
 	{
@@ -112,7 +119,6 @@ public class ParqueaderoService {
 				throw new VehiculoNoAdmitidoException(messageSource.getMessage("vehiculo.invalidoPorDia",null,Locale.getDefault()));
 		}
 	}
-	
 
 	public Parqueo retirarVehiculo(String placa) throws VehiculoNoAdmitidoException
 	{
