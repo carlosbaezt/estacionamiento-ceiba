@@ -70,11 +70,18 @@ public class ParqueaderoService {
 	
 	public void validarCilindraje(VehiculoDTO vehiculoDTO) throws VehiculoNoAdmitidoException
 	{
-		if(vehiculoDTO.getTipoVehiculo() == TipoVehiculo.MOTO.getCodigo()
-				&& vehiculoDTO.getCilindraje() == null)
+		if(vehiculoDTO.getTipoVehiculo() == TipoVehiculo.MOTO.getCodigo())
 		{
-			throw new VehiculoNoAdmitidoException(messageSource.getMessage("vehiculo.cilindrajeNulo",null,Locale.getDefault()));
-		}		
+			if(vehiculoDTO.getCilindraje() == null)
+			{
+				throw new VehiculoNoAdmitidoException(messageSource.getMessage("vehiculo.cilindrajeNulo",null,Locale.getDefault()));
+			}
+			
+			if(vehiculoDTO.getCilindraje() <= 0 )
+			{
+				throw new VehiculoNoAdmitidoException(messageSource.getMessage("vehiculo.cilindrajeInvalido",null,Locale.getDefault()));			
+			}			
+		}
 	}
 	
 	public void validarTipoVehiculo(Integer tipoVehiculo) throws VehiculoNoAdmitidoException {

@@ -111,6 +111,24 @@ public class IngresarVehiculoTest {
 	}
 	
 	@Test
+	public void vehiculoDTOMotoCilindrajeInvalido()
+	{
+		//Arrange
+		vehiculoDTO = new VehiculoDTO();
+		vehiculoDTO.setPlaca("JPA123");
+		vehiculoDTO.setTipoVehiculo(TipoVehiculo.MOTO.getCodigo());
+		vehiculoDTO.setCilindraje(-1);
+		try {
+			//Act
+			parquederoService.validarCilindraje(vehiculoDTO);
+			fail();
+		} catch (VehiculoNoAdmitidoException e) {
+			//Assert
+			Assert.assertEquals(e.getMessage(), messageSource.getMessage("vehiculo.cilindrajeInvalido",null,Locale.getDefault()));
+		}
+	}
+	
+	@Test
 	public void vehiculoPlacaConLetraADiaValido()
 	{
 		//Arrange
