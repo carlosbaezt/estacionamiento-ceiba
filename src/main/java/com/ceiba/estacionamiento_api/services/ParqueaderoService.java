@@ -14,6 +14,7 @@ import com.ceiba.estacionamiento_api.exceptions.VehiculoNoAdmitidoException;
 import com.ceiba.estacionamiento_api.models.Parqueo;
 import com.ceiba.estacionamiento_api.persistence.ParqueoRepository;
 import com.ceiba.estacionamiento_api.persistence.builder.ParqueoBuilder;
+import com.ceiba.estacionamiento_api.persistence.builder.VehiculoBuilder;
 import com.ceiba.estacionamiento_api.persistence.entities.ParqueoEntity;
 import com.ceiba.estacionamiento_api.utils.Constantes;
 
@@ -32,6 +33,9 @@ public class ParqueaderoService {
 	@Autowired
 	private ParqueoBuilder parqueoBuilder;
 	
+	@Autowired
+	private VehiculoBuilder vehiculoBuilder;
+	
 	private Calendar calendar;
 	
 	
@@ -41,7 +45,7 @@ public class ParqueaderoService {
 		validarAccesoAlParqueadero(vehiculoDTO);
 		ParqueoVehiculo parqueoVehiculo = parqueoFactory.obtenerParqueo(vehiculoDTO.getTipoVehiculo());
 		Parqueo parqueo = new Parqueo();
-		parqueo.setVehiculo(vehiculoDTO.toModel());
+		parqueo.setVehiculo(vehiculoBuilder.toModel(vehiculoDTO));
 		parqueoVehiculo.guardarParqueo(parqueo);
 	}
 
