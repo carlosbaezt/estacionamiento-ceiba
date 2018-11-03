@@ -22,7 +22,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.ceiba.estacionamiento_api.dto.VehiculoDTO;
 import com.ceiba.estacionamiento_api.enums.TipoVehiculo;
 import com.ceiba.estacionamiento_api.exceptions.VehiculoNoAdmitidoException;
-import com.ceiba.estacionamiento_api.models.Parqueo;
 import com.ceiba.estacionamiento_api.persistence.ParqueoRepository;
 import com.ceiba.estacionamiento_api.services.ParqueaderoService;
 import com.ceiba.estacionamiento_api.services.impl.ParqueoCarro;
@@ -50,7 +49,7 @@ public class IngresarVehiculoTest {
 		vehiculoDTO = null;
 		try {
 			//Act
-			parquederoService.ingresarVehiculo(vehiculoDTO);
+			parquederoService.validarVehiculoDTONull(vehiculoDTO);
 			fail();
 		} catch (VehiculoNoAdmitidoException e) {
 			//Assert
@@ -67,7 +66,7 @@ public class IngresarVehiculoTest {
 		
 		try {
 			//Act
-			parquederoService.ingresarVehiculo(vehiculoDTO);
+			parquederoService.validarVehiculoDTONull(vehiculoDTO);
 			fail();
 		} catch (VehiculoNoAdmitidoException e) {
 			//Assert
@@ -85,7 +84,7 @@ public class IngresarVehiculoTest {
 		
 		try {
 			//Act
-			parquederoService.ingresarVehiculo(vehiculoDTO);
+			parquederoService.validarTipoVehiculo(vehiculoDTO.getTipoVehiculo());
 			fail();
 		} catch (VehiculoNoAdmitidoException e) {
 			//Assert
@@ -103,7 +102,7 @@ public class IngresarVehiculoTest {
 		
 		try {
 			//Act
-			parquederoService.ingresarVehiculo(vehiculoDTO);
+			parquederoService.validarCilindraje(vehiculoDTO);
 			fail();
 		} catch (VehiculoNoAdmitidoException e) {
 			//Assert
@@ -123,7 +122,7 @@ public class IngresarVehiculoTest {
 		
 		try {
 			//Act
-			parquederoService.ingresarVehiculo(vehiculoDTO);
+			parquederoService.validarAccesoAlParqueadero(vehiculoDTO);
 			//Assert
 		} catch (VehiculoNoAdmitidoException e) {
 			fail();
@@ -142,7 +141,7 @@ public class IngresarVehiculoTest {
 		
 		try {
 			//Act
-			parquederoService.ingresarVehiculo(vehiculoDTO);
+			parquederoService.validarAccesoAlParqueadero(vehiculoDTO);
 			fail();
 		} catch (VehiculoNoAdmitidoException e) {
 			//Assert
@@ -158,10 +157,7 @@ public class IngresarVehiculoTest {
 		vehiculoDTO.setPlaca("OLX123");
 		vehiculoDTO.setTipoVehiculo(TipoVehiculo.MOTO.getCodigo());
 		vehiculoDTO.setCilindraje(125);
-		
-		Parqueo parqueo = new Parqueo();		
-		parqueo.setVehiculo(vehiculoDTO.toModel());
-				
+					
 		Mockito.when(parqueoRepository.obtenerParqueosActivosPorTipoVehiculo(TipoVehiculo.MOTO.getCodigo())).thenReturn(ParqueoMoto.TOTAL_ESPACIOS_DISPONIBLES);
 		
 		try {
@@ -181,9 +177,6 @@ public class IngresarVehiculoTest {
 		vehiculoDTO = new VehiculoDTO();
 		vehiculoDTO.setPlaca("CBX123");
 		vehiculoDTO.setTipoVehiculo(TipoVehiculo.CARRO.getCodigo());
-		
-		Parqueo parqueo = new Parqueo();		
-		parqueo.setVehiculo(vehiculoDTO.toModel());
 		
 		when(parqueoRepository.obtenerParqueosActivosPorTipoVehiculo(TipoVehiculo.CARRO.getCodigo())).thenReturn(ParqueoCarro.TOTAL_ESPACIOS_DISPONIBLES);
 		
