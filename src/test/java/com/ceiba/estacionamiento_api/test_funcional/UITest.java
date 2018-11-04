@@ -17,7 +17,7 @@ import com.ceiba.estacionamiento_api.Utilidades;
 public class UITest {
 	
 	public static WebDriver driver;
-	private static final String URL_TEST = "http://localhost:4200/";
+	private static final String URL_TEST = "http://35.243.194.8/estacionamiento/dist/estacionamiento/";
 	private static final String MENSAJE_BIENVENDIA = "Estacionamiento - ADN";
 	private static final String PARTE_MENSAJE_EXITO = "exitosamente";
 	
