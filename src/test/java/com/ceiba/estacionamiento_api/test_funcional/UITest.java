@@ -13,7 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.ceiba.estacionamiento_api.Utilidades;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+//@RunWith(SpringJUnit4ClassRunner.class)
 public class UITest {
 	/*
 	private static final String URL_TEST = "http://35.243.194.8/estacionamiento/dist/estacionamiento/";
