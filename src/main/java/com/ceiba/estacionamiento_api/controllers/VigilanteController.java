@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ceiba.estacionamiento_api.dto.ParqueoDTO;
 import com.ceiba.estacionamiento_api.dto.VehiculoDTO;
+import com.ceiba.estacionamiento_api.exceptions.TcrmException;
 import com.ceiba.estacionamiento_api.exceptions.VehiculoNoAdmitidoException;
 import com.ceiba.estacionamiento_api.services.ParqueaderoService;
+import com.ceiba.estacionamiento_api.services.TcrmService;
 
 import java.util.List;
 
@@ -29,6 +31,9 @@ public class VigilanteController {
 	
 	@Autowired
 	ParqueaderoService parquederoService;
+	
+	@Autowired
+	TcrmService tcrmService;
 	
 	@PostMapping(value = "/ingresarVehiculo")
 	@CrossOrigin
@@ -62,4 +67,15 @@ public class VigilanteController {
 		return new ResponseEntity<>(parquederoService.obtenerVehiculosParqueados(), HttpStatus.OK );
 	}
 	
+	@GetMapping(value = "/trm")
+	@CrossOrigin
+	public ResponseEntity<Object> obtenerTrm()
+	{
+		try {
+			return new ResponseEntity<>(tcrmService.consultarTcrm(), HttpStatus.OK );
+		} catch (TcrmException exception) {
+			LOGGER.info("Error en /obtenerTrm",exception);
+			return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST ) ;
+		}
+	}
 }
