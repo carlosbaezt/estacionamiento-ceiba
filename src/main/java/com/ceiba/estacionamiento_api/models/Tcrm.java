@@ -7,9 +7,6 @@ public class Tcrm {
 	private String trmPriceChange;
 	private String trm;
 	
-	public Tcrm() {
-	}
-
 	public String getTrmPriceChange() {
 		return trmPriceChange;
 	}
