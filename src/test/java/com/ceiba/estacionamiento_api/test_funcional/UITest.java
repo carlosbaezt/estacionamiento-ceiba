@@ -21,16 +21,20 @@ public class UITest {
 	
 	@Test
 	public void paginaInicial() {
-		//Assert
+		//Arrange
+		System.setProperty("webdriver.chrome.driver", generarRutaDriver());
 		WebDriver driver = new ChromeDriver();
+		//Act
 		driver.get(URL_TEST);
+		//Assert
 		assertTrue(driver.findElement(By.id("tituloCeiba")).getText().equals(MENSAJE_BIENVENDIA));
-		driver.quit();
+		driver.close();
 	}
 	
 	@Test
 	public void ingresaVehiculo()
 	{
+		System.setProperty("webdriver.chrome.driver", generarRutaDriver());
 		WebDriver driver = new ChromeDriver();
 		driver.get(URL_TEST);
 				
@@ -48,7 +52,19 @@ public class UITest {
 
 		//Assert
 		assertTrue(driver.findElement(By.id("mensajeIngresarVehiculo")).getText().contains(PARTE_MENSAJE_EXITO));
-		
-		driver.quit();
+		driver.close();
+	}
+	
+	private String generarRutaDriver()
+	{
+		String os = System.getProperty("os.name");
+		if(os.contains("Windows"))
+		{
+			return "lib/chromedriver.exe";
+		}
+		else
+		{
+			return "lib/chromedriver";
+		}
 	}
 }
