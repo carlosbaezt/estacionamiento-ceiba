@@ -7,6 +7,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -23,7 +24,17 @@ public class UITest {
 	public void paginaInicial() {
 		//Arrange
 		System.setProperty("webdriver.chrome.driver", generarRutaDriver());
-		WebDriver driver = new ChromeDriver();
+		
+		ChromeOptions options = new ChromeOptions();
+		options.setExperimentalOption("useAutomationExtension", false);
+		options.addArguments("start-maximized"); // open Browser in maximized mode
+		options.addArguments("disable-infobars"); // disabling infobars
+		options.addArguments("--disable-extensions"); // disabling extensions
+		options.addArguments("--disable-gpu"); // applicable to windows os only
+		options.addArguments("--disable-dev-shm-usage"); // overcome limited resource problems
+		options.addArguments("--no-sandbox"); // Bypass OS security model
+		
+		WebDriver driver = new ChromeDriver(options);
 		//Act
 		driver.get(URL_TEST);
 		//Assert
@@ -31,29 +42,6 @@ public class UITest {
 		driver.close();
 	}
 	
-	@Test
-	public void ingresaVehiculo()
-	{
-		System.setProperty("webdriver.chrome.driver", generarRutaDriver());
-		WebDriver driver = new ChromeDriver();
-		driver.get(URL_TEST);
-				
-		//Arrange
-		driver.findElement(By.id("lblTipoVehiculoCarro")).click();
-		
-		WebElement placaElement = driver.findElement(By.id("placa"));
-		placaElement.sendKeys(Utilidades.generarPlacaAleatoria());
-		
-		WebElement btnAceptar = driver.findElement(By.id("btnIngresarVehiculo"));
-		//Act
-		btnAceptar.click();
-		WebDriverWait wait = new WebDriverWait(driver, 5);
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("mensajeIngresarVehiculo")));
-
-		//Assert
-		assertTrue(driver.findElement(By.id("mensajeIngresarVehiculo")).getText().contains(PARTE_MENSAJE_EXITO));
-		driver.close();
-	}
 	
 	private String generarRutaDriver()
 	{
