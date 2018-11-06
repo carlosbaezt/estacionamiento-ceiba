@@ -1,0 +1,50 @@
+<h3 class="text-center">Listado de Vehículos Estacionados</h3>
+<hr>
+<div *ngIf="listadoParqueos != undefined  && listadoParqueos.length > 0" >
+    <table class="table table-hover table-md">
+        <thead>
+            <tr>
+                <th>Placa</th>
+                <th>Tipo Vehículo</th>
+                <th>Fecha de Ingreso</th>
+                <th>Retirar</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let parqueo of listadoParqueos" >
+                <td>{{parqueo.placa}}</td>
+                <td>{{parqueo.tipoVehiculo}}</td>
+                <td>{{parqueo.fechaIngreso}}</td>
+                <td>
+                    <button class="btn circle-icon" (click)="retirarVehiculo(parqueo.placa,content)">
+                        <fa-icon icon="arrow-right"></fa-icon>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div *ngIf="listadoParqueos == undefined || listadoParqueos.length == 0" >
+    <div align="center">
+        <fa-icon icon="car-crash" class="car-crash" size="9x"></fa-icon>
+        <br/>
+        Actualmente no hay vehículos estacionados
+    </div>
+</div>
+
+<ng-template #content let-modal>
+        <div [ngClass]="[procesoExitoso ? 'modal-success' : 'modal-error']">
+            <div class="modal-header">
+                <h4 class="modal-title">{{ titulo }}!</h4>
+                <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>{{ mensaje }}</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Cerrar</button>
+            </div>
+        </div>
+    </ng-template>

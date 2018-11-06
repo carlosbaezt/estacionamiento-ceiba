@@ -1,0 +1,70 @@
+<h3 class="text-center">Ingreso de Vehículos</h3>
+<hr>
+<form #ingresoVehiculoForm="ngForm" (ngSubmit)="onSubmit(ingresoVehiculoForm, content)">
+    <div class="col-12">
+        <div class="form-group">
+            <label for="btn-group-toggle">Tipo de Vehículo:</label><br/>
+            <div class="btn-group btn-group-toggle container" id="lblTipoVehiculoMoto">
+                <label class="btn btn-tipo-vehiculo col-sm checkMoto" [class.active]="vehiculoModel.tipoVehiculo == tipoVehiculoMoto">
+                    <fa-icon icon="motorcycle"></fa-icon>
+                    <input [(ngModel)]="vehiculoModel.tipoVehiculo" value="{{tipoVehiculoMoto}}" type="radio" name="tipoVehiculo" id="chkTipoVehiculoMoto" required #tipoVehiculo="ngModel" > Moto
+                </label>
+                <label class="btn btn-tipo-vehiculo col-sm" [class.active]="vehiculoModel.tipoVehiculo == tipoVehiculoCarro" id="lblTipoVehiculoCarro">
+                        <fa-icon icon="car"></fa-icon>
+                    <input [(ngModel)]="vehiculoModel.tipoVehiculo" value="{{tipoVehiculoCarro}}" type="radio" name="tipoVehiculo" id="chkTipoVehiculoCarro" required #tipoVehiculo="ngModel" > Carro
+                </label>
+            </div>
+            <div [hidden]="tipoVehiculo.valid || tipoVehiculo.pristine"
+                class="errores-input">
+                El Tipo de Vehículo es requerido
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="placa">Placa:</label>
+            <input type="text" class="form-control" id="placa"
+                   [(ngModel)]="vehiculoModel.placa" name="placa"
+                   #placa="ngModel" required appUpperCaseText>
+            <div [hidden]="placa.valid || placa.pristine"
+                class="errores-input">
+                La Placa es requerida
+            </div>
+        </div>
+        <div *ngIf="vehiculoModel.tipoVehiculo == tipoVehiculoMoto" class="form-group">
+            <label for="cilindraje">Cilindraje:</label>
+            <input type="number" class="form-control" id="cilindraje"
+                    [(ngModel)]="vehiculoModel.cilindraje" name="cilindraje" 
+                    #cilindraje="ngModel" min="1" required>
+            <div [hidden]="cilindraje.valid || cilindraje.pristine"
+                class="errores-input">
+                El Cilindraje es requerido
+            </div>
+        </div>
+
+        <div class="separador form-group text-center">
+            <button type="submit" class="btn btn-ingresar-vehiculo col-12" 
+                id="btnIngresarVehiculo"
+                [disabled]="!ingresoVehiculoForm.form.valid">
+                Ingresar al parqueadero
+                <fa-icon icon="arrow-circle-right"></fa-icon>
+            </button>
+        </div>
+    </div>
+</form>
+
+<ng-template #content let-modal  id="modalIngresarVehiculo">
+    <div [ngClass]="[procesoExitoso ? 'modal-success' : 'modal-error']">
+        <div class="modal-header">
+            <h4 class="modal-title">{{ titulo }}!</h4>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p id="mensajeIngresarVehiculo">{{ mensaje }}</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Cerrar</button>
+        </div>
+    </div>
+</ng-template>

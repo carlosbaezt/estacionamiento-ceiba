@@ -1,0 +1,15 @@
+<div *ngIf="cargandoPeticion">
+  <h3>
+      <img class="img-responsive logoCeibaHome" src="./assets/images/cargando.gif" >
+  </h3>
+</div>
+
+<div *ngIf="peticionExitosa">
+  <h3>
+      <fa-icon icon="money-bill-alt" class="dollar-bill"></fa-icon>
+      {{ mensaje }}
+  </h3>
+</div>
+
+<div *ngIf="!peticionExitosa">
+</div>
