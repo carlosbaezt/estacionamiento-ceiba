@@ -52,7 +52,7 @@ public class UITest {
 		}
 		else
 		{
-			return "lib/chromedriver";
+			return "/opt/Jenkins/workspace/CeibaInduccion/Ceiba-Estacionamiento(carlos.baez)/lib/chromedriver";
 		}
 	}
 }
