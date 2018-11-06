@@ -33,7 +33,7 @@ pipeline {
 			steps{
 				echo "------------>Compile<------------"
 				sh 'gradle --b ./build.gradle compileJava'
-				sh 'chmod +x lib/chromedriver'
+				sh 'chmod 777 lib/chromedriver'
 				sh 'ls -la lib/'
 			}
 		}
