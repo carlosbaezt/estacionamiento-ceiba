@@ -16,7 +16,7 @@ import com.ceiba.estacionamiento_api.persistence.entities.ParqueoEntity;
 public class ParqueoBuilder {
 	
 	@Autowired
-	VehiculoBuilder vehiculoBuilder;
+	private VehiculoBuilder vehiculoBuilder;
 	
 	public Parqueo toModel(ParqueoEntity parqueoEntity)
 	{

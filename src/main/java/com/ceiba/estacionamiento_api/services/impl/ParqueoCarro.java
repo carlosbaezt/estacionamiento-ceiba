@@ -12,8 +12,6 @@ import com.ceiba.estacionamiento_api.enums.TipoVehiculo;
 import com.ceiba.estacionamiento_api.exceptions.VehiculoNoAdmitidoException;
 import com.ceiba.estacionamiento_api.models.Parqueo;
 import com.ceiba.estacionamiento_api.persistence.ParqueoRepository;
-import com.ceiba.estacionamiento_api.persistence.TipoVehiculoRepository;
-import com.ceiba.estacionamiento_api.persistence.VehiculoRepository;
 import com.ceiba.estacionamiento_api.persistence.builder.ParqueoBuilder;
 import com.ceiba.estacionamiento_api.persistence.entities.ParqueoEntity;
 import com.ceiba.estacionamiento_api.services.ParqueoVehiculo;
@@ -26,14 +24,8 @@ public class ParqueoCarro extends ParqueoVehiculo {
 	public static final int VALOR_HORA = 1000;
 	
 	@Autowired
-	ParqueoRepository parqueoRepository;
-	
-	@Autowired
-	VehiculoRepository vehiculoRepository ;
-	
-	@Autowired
-	TipoVehiculoRepository tipoVehiculoRepository ;
-	
+	private ParqueoRepository parqueoRepository;
+
 	@Autowired
 	private MessageSource messageSource;
 	
