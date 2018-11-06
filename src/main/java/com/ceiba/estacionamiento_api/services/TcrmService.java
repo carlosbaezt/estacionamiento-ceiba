@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
-import com.ceiba.estacionamiento_api.controllers.VigilanteController;
 import com.ceiba.estacionamiento_api.exceptions.TcrmException;
 import com.ceiba.estacionamiento_api.models.Tcrm;
 
