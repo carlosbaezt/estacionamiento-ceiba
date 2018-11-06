@@ -47,7 +47,7 @@ public class UITest {
 		WebElement btnAceptar = driver.findElement(By.id("btnIngresarVehiculo"));
 		//Act
 		btnAceptar.click();
-		WebDriverWait wait = new WebDriverWait(driver, 5);// 1 minute 
+		WebDriverWait wait = new WebDriverWait(driver, 5);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("mensajeIngresarVehiculo")));
 
 		//Assert

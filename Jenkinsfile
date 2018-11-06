@@ -31,8 +31,10 @@ pipeline {
 		
 		stage('Compile') {
 			steps{
-				echo "------------>Unit Tests<------------"
+				echo "------------>Compile<------------"
 				sh 'gradle --b ./build.gradle compileJava'
+				sh 'chmod +x lib/chromedriver'
+				sh 'ls -la lib/'
 			}
 		}
 		
