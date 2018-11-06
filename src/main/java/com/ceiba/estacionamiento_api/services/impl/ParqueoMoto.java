@@ -27,8 +27,8 @@ public class ParqueoMoto extends ParqueoVehiculo implements ParqueoMotoCobro {
 	private static final int CILIDRAJE_MAYOR_COBRO = 500;
 	private static final int VALOR_ADICIONAL_COBRO_MAYOR_CILIDRAJE = 2000;
 	
-	 @Autowired
-	 private ParqueoRepository parqueoRepository;
+	@Autowired
+	private ParqueoRepository parqueoRepository;
 	
 	@Autowired
 	VehiculoRepository vehiculoRepository;
