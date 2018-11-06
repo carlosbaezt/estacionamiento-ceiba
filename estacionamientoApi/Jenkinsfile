@@ -19,8 +19,7 @@ pipeline {
 		pollSCM('@hourly')
 	}
 	
-	stages{
-		sh 'cd estacionamientoApi'
+	stages{		
 		stage('Checkout') {
 			steps{
 				echo "------------>Checkout<------------"
