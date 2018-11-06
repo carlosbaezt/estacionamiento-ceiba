@@ -24,11 +24,11 @@ public class ParqueoMoto extends ParqueoVehiculo implements ParqueoMotoCobro {
 	public static final int TOTAL_ESPACIOS_DISPONIBLES = 10;
 	public static final int VALOR_DIA = 4000;
 	public static final int VALOR_HORA = 500;
-	public static final int CILIDRAJE_MAYOR_COBRO = 500;
-	public static final int VALOR_ADICIONAL_COBRO_MAYOR_CILIDRAJE = 2000;
+	private static final int CILIDRAJE_MAYOR_COBRO = 500;
+	private static final int VALOR_ADICIONAL_COBRO_MAYOR_CILIDRAJE = 2000;
 	
 	@Autowired
-	ParqueoRepository parqueoRepository;
+	private ParqueoRepository parqueoRepository;
 	
 	@Autowired
 	VehiculoRepository vehiculoRepository;

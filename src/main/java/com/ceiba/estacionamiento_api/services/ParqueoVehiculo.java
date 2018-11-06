@@ -80,7 +80,7 @@ public abstract class ParqueoVehiculo {
 		return total;
 	}
 	
-	public VehiculoEntity generarVehiculo(Vehiculo vehiculo)
+	private VehiculoEntity generarVehiculo(Vehiculo vehiculo)
 	{
 		VehiculoEntity vehiculoEntity = vehiculoRepository.findByPlacaIgnoreCase(vehiculo.getPlaca());
 		if(vehiculoEntity == null)

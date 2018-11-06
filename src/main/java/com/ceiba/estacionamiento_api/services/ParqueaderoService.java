@@ -22,10 +22,10 @@ import com.ceiba.estacionamiento_api.utils.Constantes;
 public class ParqueaderoService {
 	
 	@Autowired
-	ParqueoRepository parqueoRepository;
+	private ParqueoRepository parqueoRepository;
 
 	@Autowired
-	ParqueoFactory parqueoFactory;
+	private ParqueoFactory parqueoFactory;
 	
 	@Autowired
 	private MessageSource messageSource;
