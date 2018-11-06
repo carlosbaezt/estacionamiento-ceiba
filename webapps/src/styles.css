@@ -1,0 +1,130 @@
+/* You can add global styles to this file, and also import other style files */
+body, html {
+    font-family: "lato", sans-serif;
+}
+
+.bg-parqueadero
+{
+    background-color: #ffea00;
+    color: black;
+    padding-left: 30px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.btn-tipo-vehiculo
+{
+    color: black;
+    background-color: #ffea00;
+    border-color: #ffea00;
+}
+
+.btn-tipo-vehiculo:active,
+.btn-tipo-vehiculo.active,
+.btn-tipo-vehiculo:hover
+{
+    color: #ffea00;
+    background-color: black;
+    border-color: black;
+}
+
+.ng-valid[required], .ng-valid.required  {
+    border-left: 10px solid #ffc107;
+  }
+  
+.ng-invalid:not(form)  {
+    border-left: 10px solid #a94442;
+}
+
+.errores-input
+{
+    width: 100%;
+    margin-top: .25rem;
+    font-size: 80%;
+    color: #dc3545;
+}
+
+.btn-ingresar-vehiculo
+{
+    color: black;
+    background-color: #ffea00;
+}
+
+.btn-ingresar-vehiculo:hover
+{
+    color: #ffea00;
+    background-color: black;
+}
+
+.btn-ingresar-vehiculo:disabled
+{
+    color: #6c757d;
+    background-color: #ffffa0;
+    background-image: none;
+}
+
+.circle-icon {
+    color: black;
+    background-color: #ffea00;
+    border-radius: 50% !important;
+}
+
+.circle-icon:hover {
+    color: #ffea00;
+    background-color: black;
+    border-radius: 50% !important;
+}
+
+.separador{
+    margin-top: 2rem;
+}
+
+.btn-group-toggle
+{
+    padding: 0 !important;
+}
+
+.checkMoto
+{
+    border-right: 2px solid black !important;
+}
+
+.modal-error > .modal-header
+{
+    background: #a94442;
+    color: white;
+}
+
+.modal-success > .modal-header
+{
+    background: #ffea00;
+    color: black;
+}
+
+.modal-footer{
+    padding-top: 0px !important;
+    border-top: none !important;
+}
+
+.car-crash
+{
+    color: #ffea00;
+}
+
+.logoCeibaHome
+{
+    width: 100px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.tituloCeiba
+{
+    display: inline-block;
+    vertical-align: middle;
+    margin-bottom: 0px;
+}
+.dollar-bill
+{
+    color: #85bb65; 
+}
