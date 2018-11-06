@@ -12,7 +12,6 @@ import com.ceiba.estacionamiento_api.enums.TipoVehiculo;
 import com.ceiba.estacionamiento_api.exceptions.VehiculoNoAdmitidoException;
 import com.ceiba.estacionamiento_api.models.Parqueo;
 import com.ceiba.estacionamiento_api.persistence.ParqueoRepository;
-import com.ceiba.estacionamiento_api.persistence.VehiculoRepository;
 import com.ceiba.estacionamiento_api.persistence.builder.ParqueoBuilder;
 import com.ceiba.estacionamiento_api.persistence.entities.ParqueoEntity;
 import com.ceiba.estacionamiento_api.services.ParqueoMotoCobro;
@@ -29,10 +28,7 @@ public class ParqueoMoto extends ParqueoVehiculo implements ParqueoMotoCobro {
 	
 	@Autowired
 	private ParqueoRepository parqueoRepository;
-	
-	@Autowired
-	VehiculoRepository vehiculoRepository;
-	
+		
 	@Autowired
 	private MessageSource messageSource;
 	

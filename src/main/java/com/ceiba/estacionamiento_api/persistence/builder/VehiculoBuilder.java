@@ -10,7 +10,7 @@ import com.ceiba.estacionamiento_api.persistence.entities.VehiculoEntity;
 @Component
 public class VehiculoBuilder {
 	
-	public Vehiculo toModel(VehiculoEntity vehiculoEntity)
+	Vehiculo toModel(VehiculoEntity vehiculoEntity)
 	{
 		Vehiculo vehiculo = new Vehiculo();
 		if(vehiculoEntity.getCilindraje() != null)
