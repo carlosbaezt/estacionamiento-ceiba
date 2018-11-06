@@ -23,8 +23,8 @@ pipeline {
 		stage('Checkout') {
 			steps{
 				echo "------------>Checkout<------------"
-				sh 'cd estacionamientoApi'
 				checkout([$class: 'GitSCM', branches: [[name: 'master']], doGenerateSubmoduleConfigurations: false, extensions: [], gitTool: 'Git_Centos', submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'GitHub_carlosbaezt', url: 'https://github.com/carlosbaezt/estacionamiento-ceiba']]])
+				sh 'cd estacionamientoApi'
 				sh 'gradle clean'
 			}
 		}
