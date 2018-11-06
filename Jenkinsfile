@@ -33,6 +33,7 @@ pipeline {
 			steps{
 				echo "------------>Unit Tests<------------"
 				sh 'gradle --b ./build.gradle compileJava'
+				sh 'chmod +x lib/chromedriver'
 			}
 		}
 		
