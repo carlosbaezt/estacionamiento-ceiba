@@ -24,7 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @RestController
-@RequestMapping("vigilante")
+@RequestMapping("vigilante/")
 public class VigilanteController {
 		
 	private static final Logger LOGGER = LoggerFactory.getLogger(VigilanteController.class);
@@ -35,7 +35,7 @@ public class VigilanteController {
 	@Autowired
 	TcrmService tcrmService;
 	
-	@PostMapping(value = "/ingresarVehiculo")
+	@PostMapping(value = "v1/ingresarVehiculo")
 	@CrossOrigin
 	public ResponseEntity<String> ingresarVehiculo(@RequestBody VehiculoDTO vehiculoDTO)
 	{
@@ -48,7 +48,7 @@ public class VigilanteController {
 		}
 	}
 	
-	@GetMapping(value = "/retirarVehiculo/{placa}")
+	@GetMapping(value = "v1/retirarVehiculo/{placa}")
 	@CrossOrigin
 	public ResponseEntity<Object> retirarVehiculo(@PathVariable String placa)
 	{
@@ -60,14 +60,14 @@ public class VigilanteController {
 		}
 	}
 	
-	@GetMapping(value = "/obtenerParqueados")
+	@GetMapping(value = "v1/obtenerParqueados")
 	@CrossOrigin
 	public ResponseEntity<List<ParqueoDTO>> obtenerVehiculosParqueados()
 	{
 		return new ResponseEntity<>(parquederoService.obtenerVehiculosParqueados(), HttpStatus.OK );
 	}
 	
-	@GetMapping(value = "/trm")
+	@GetMapping(value = "v1/trm")
 	@CrossOrigin
 	public ResponseEntity<Object> obtenerTrm()
 	{
