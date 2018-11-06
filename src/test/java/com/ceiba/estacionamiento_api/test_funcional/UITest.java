@@ -26,6 +26,7 @@ public class UITest {
 		System.setProperty("webdriver.chrome.driver", generarRutaDriver());
 		
 		ChromeOptions options = new ChromeOptions();
+		options.setBinary("/opt/Jenkins/workspace/CeibaInduccion/Ceiba-Estacionamiento(carlos.baez)/lib/chromedriver");
 		options.setExperimentalOption("useAutomationExtension", false);
 		options.addArguments("start-maximized"); // open Browser in maximized mode
 		options.addArguments("disable-infobars"); // disabling infobars
