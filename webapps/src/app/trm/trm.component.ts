@@ -26,7 +26,7 @@ export class TrmComponent implements OnInit {
         this.trmService.consultarTrm().subscribe(
             res => {
               var response = res.json();
-              this.mensaje = "$1,0 (USD) =  $" + response.trm + " (COP)";
+              this.mensaje = "$1.00 (USD) =  $" + response.trm + " (COP)";
               this.cargandoPeticion = false;
               this.peticionExitosa = true;
             },
