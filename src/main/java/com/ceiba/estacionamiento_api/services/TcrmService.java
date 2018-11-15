@@ -21,7 +21,7 @@ public class TcrmService{
 	{
 		TCRMClient client = new TCRMClient();
 		try {
-			DecimalFormat decimalFormat = new DecimalFormat("#0.00");
+			DecimalFormat decimalFormat = new DecimalFormat("###,###.###");
 			Tcrm tcrm = new Tcrm();
 			tcrm.setTrm(decimalFormat.format(client.obtenerTRMActual()));
 			return tcrm;

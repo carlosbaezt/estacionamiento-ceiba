@@ -131,7 +131,7 @@ public class ParqueaderoService {
 		}
 	}
 
-	public Parqueo retirarVehiculo(String placa) throws VehiculoNoAdmitidoException
+	public ParqueoDTO retirarVehiculo(String placa) throws VehiculoNoAdmitidoException
 	{
 		ParqueoEntity parqueoEntity = parqueoRepository.consultarParqueoActivoPorPlaca(placa);
 		if(parqueoEntity == null) {
@@ -139,7 +139,8 @@ public class ParqueaderoService {
 		}
 		
 		ParqueoVehiculo parqueoVehiculo = parqueoFactory.obtenerParqueo(parqueoEntity.getVehiculo().getTipoVehiculo().getId().intValue());
-		return parqueoVehiculo.retirarParqueoPorPlaca(placa);
+		Parqueo parqueo = parqueoVehiculo.retirarParqueoPorPlaca(placa);
+		return parqueoBuilder.toDTO(parqueo);
 	}
 	
 	public List<ParqueoDTO> obtenerVehiculosParqueados()

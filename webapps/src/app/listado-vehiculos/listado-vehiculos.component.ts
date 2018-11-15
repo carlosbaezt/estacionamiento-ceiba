@@ -49,7 +49,7 @@ export class ListadoVehiculosComponent implements OnInit,OnChanges {
             res => {
                 var response = res.json();
                 this.titulo = "Fantástico";
-                this.mensaje = "El Vehículo " + response.vehiculo.placa +" salio del parqueadero exitosamente, el valor a pagar es: " + this.formatter.format(response.precio);
+                this.mensaje = "El Vehículo " + response.placa +" salio del parqueadero exitosamente, el valor a pagar es: " + this.formatter.format(response.precio);
                 this.procesoExitoso = true;
                 this.mostrarModalConfirmacion(content);
                 this.cargarListadoParqueos();

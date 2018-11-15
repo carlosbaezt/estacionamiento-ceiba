@@ -18,6 +18,8 @@ public class ParqueoBuilder {
 	@Autowired
 	private VehiculoBuilder vehiculoBuilder;
 	
+	private static final String FORMATO_FECHA = "yyyy-MM-dd hh:mm a";
+	
 	public Parqueo toModel(ParqueoEntity parqueoEntity)
 	{
 		Parqueo parqueo = new Parqueo();
@@ -34,18 +36,49 @@ public class ParqueoBuilder {
 		return parqueo;
 	}
 	
+	public ParqueoDTO toDTO(Parqueo parqueo)
+	{
+		DateFormat dateFormat = new SimpleDateFormat(FORMATO_FECHA);
+		ParqueoDTO parqueoDTO = new ParqueoDTO();
+		parqueoDTO.setFechaIngreso(dateFormat.format(parqueo.getFechaIngreso()));
+		parqueoDTO.setPlaca(parqueo.getVehiculo().getPlaca());
+		if(parqueo.getPrecio() != null)
+		{
+			parqueoDTO.setPrecio(parqueo.getPrecio());
+		}
+		if(parqueo.getFechaSalida() != null)
+		{
+			parqueoDTO.setFechaSalida(dateFormat.format(parqueo.getFechaSalida()));
+		}
+		
+		return parqueoDTO;
+	}
+	
+	public ParqueoDTO toDTO(ParqueoEntity parqueoEntity)
+	{
+		DateFormat dateFormat = new SimpleDateFormat(FORMATO_FECHA);
+		ParqueoDTO parqueoDTO = new ParqueoDTO();
+		parqueoDTO.setFechaIngreso(dateFormat.format(parqueoEntity.getFechaIngreso()));
+		parqueoDTO.setPlaca(parqueoEntity.getVehiculo().getPlaca());
+		parqueoDTO.setTipoVehiculo(parqueoEntity.getVehiculo().getTipoVehiculo().getNombre());
+		if(parqueoEntity.getPrecio() != null)
+		{
+			parqueoDTO.setPrecio(parqueoEntity.getPrecio());
+		}
+		if(parqueoEntity.getFechaSalida() != null)
+		{
+			parqueoDTO.setFechaSalida(dateFormat.format(parqueoEntity.getFechaSalida()));
+		}
+		
+		return parqueoDTO;
+	}
+	 
 	public List<ParqueoDTO> toDTOs(List<ParqueoEntity> parqueosEntity)
 	{
-		List<ParqueoDTO> parqueosDTO = new ArrayList<>();
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
-		
+		List<ParqueoDTO> parqueosDTO = new ArrayList<>();		
 		for(ParqueoEntity parqueoEntity : parqueosEntity )
 		{
-			ParqueoDTO parqueoDTO = new ParqueoDTO();
-			parqueoDTO.setFechaIngreso(dateFormat.format(parqueoEntity.getFechaIngreso()));
-			parqueoDTO.setPlaca(parqueoEntity.getVehiculo().getPlaca());
-			parqueoDTO.setTipoVehiculo(parqueoEntity.getVehiculo().getTipoVehiculo().getNombre());
-			parqueosDTO.add(parqueoDTO);
+			parqueosDTO.add(toDTO(parqueoEntity));
 		}
 		
 		return parqueosDTO;	

@@ -1,10 +1,14 @@
 package com.ceiba.estacionamiento_api.dto;
 
+import java.math.BigDecimal;
+
 public class ParqueoDTO {
 	
 	private String placa;
 	private String tipoVehiculo;
 	private String fechaIngreso;
+	private BigDecimal precio;
+	private String fechaSalida;
 	
 	
 	public String getPlaca() {
@@ -25,4 +29,16 @@ public class ParqueoDTO {
 	public void setFechaIngreso(String fechaIngreso) {
 		this.fechaIngreso = fechaIngreso;
 	}
+	public BigDecimal getPrecio() {
+		return precio;
+	}
+	public void setPrecio(BigDecimal precio) {
+		this.precio = precio;
+	}
+	public String getFechaSalida() {
+		return fechaSalida;
+	}
+	public void setFechaSalida(String fechaSalida) {
+		this.fechaSalida = fechaSalida;
+	}	
 }
