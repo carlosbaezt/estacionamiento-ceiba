@@ -61,7 +61,7 @@ public abstract class ParqueoVehiculo {
 		int horasParqueo         = ParqueoCalculadora.obtenerHorasParqueo(fechaIngreso,fechaSalida);
 		int diasParqueoCompletos = (int) Math.floor(horasParqueo / Constantes.TOTAL_HORAS_DIA);
 		
-		if(diasParqueoCompletos >= 1)
+		if(diasParqueoCompletos > 0)
 		{
 			total = BigDecimal.valueOf((double) diasParqueoCompletos * valorDia);
 			horasParqueo = (int) (horasParqueo % Constantes.TOTAL_HORAS_DIA);
