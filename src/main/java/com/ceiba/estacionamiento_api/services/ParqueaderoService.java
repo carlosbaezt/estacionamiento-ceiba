@@ -1,10 +1,8 @@
 package com.ceiba.estacionamiento_api.services;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 
 import com.ceiba.estacionamiento_api.dto.ParqueoDTO;
@@ -17,6 +15,7 @@ import com.ceiba.estacionamiento_api.persistence.builder.ParqueoBuilder;
 import com.ceiba.estacionamiento_api.persistence.builder.VehiculoBuilder;
 import com.ceiba.estacionamiento_api.persistence.entities.ParqueoEntity;
 import com.ceiba.estacionamiento_api.utils.Constantes;
+import com.ceiba.estacionamiento_api.utils.MensajesExcepciones;
 
 @Controller
 public class ParqueaderoService {
@@ -26,9 +25,9 @@ public class ParqueaderoService {
 
 	@Autowired
 	private ParqueoFactory parqueoFactory;
-	
+		
 	@Autowired
-	private MessageSource messageSource;
+	private MensajesExcepciones mensajesExcepciones;
 	
 	@Autowired
 	private ParqueoBuilder parqueoBuilder;
@@ -59,12 +58,12 @@ public class ParqueaderoService {
 	{
 		if(vehiculoDTO == null)
 		{
-			throw new VehiculoNoAdmitidoException(messageSource.getMessage("vehiculo.nulo",null,Locale.getDefault()));
+			throw new VehiculoNoAdmitidoException(mensajesExcepciones.obtenerMensaje("vehiculo.nulo"));
 		}
 		
-		if(vehiculoDTO.getPlaca() == null)
+		if(vehiculoDTO.getPlaca() == null || vehiculoDTO.getPlaca().isEmpty())
 		{
-			throw new VehiculoNoAdmitidoException(messageSource.getMessage("vehiculo.placaNula",null,Locale.getDefault()));
+			throw new VehiculoNoAdmitidoException(mensajesExcepciones.obtenerMensaje("vehiculo.placaNula"));
 		}
 	}
 	
@@ -74,19 +73,19 @@ public class ParqueaderoService {
 		{
 			if(vehiculoDTO.getCilindraje() == null)
 			{
-				throw new VehiculoNoAdmitidoException(messageSource.getMessage("vehiculo.cilindrajeNulo",null,Locale.getDefault()));
+				throw new VehiculoNoAdmitidoException(mensajesExcepciones.obtenerMensaje("vehiculo.cilindrajeNulo"));
 			}
 			
 			if(vehiculoDTO.getCilindraje() <= 0 )
 			{
-				throw new VehiculoNoAdmitidoException(messageSource.getMessage("vehiculo.cilindrajeInvalido",null,Locale.getDefault()));			
+				throw new VehiculoNoAdmitidoException(mensajesExcepciones.obtenerMensaje("vehiculo.cilindrajeInvalido"));			
 			}			
 		}
 	}
 	
 	public void validarTipoVehiculo(Integer tipoVehiculo) throws VehiculoNoAdmitidoException {
 		if(tipoVehiculo == null){
-			throw new VehiculoNoAdmitidoException(messageSource.getMessage("vehiculo.tipoVehiculoNulo",null,Locale.getDefault()));
+			throw new VehiculoNoAdmitidoException(mensajesExcepciones.obtenerMensaje("vehiculo.tipoVehiculoNulo"));
 		}
 		
 		for (TipoVehiculo enumTipoVehiculo : TipoVehiculo.values()) {
@@ -95,7 +94,7 @@ public class ParqueaderoService {
 	        }
 	    }
 		
-		throw new VehiculoNoAdmitidoException(messageSource.getMessage("vehiculo.tipoVehiculoInvalido",null,Locale.getDefault()));
+		throw new VehiculoNoAdmitidoException(mensajesExcepciones.obtenerMensaje("vehiculo.tipoVehiculoInvalido"));
 		
 	}
 	
@@ -108,7 +107,7 @@ public class ParqueaderoService {
 	private void validarVehiculoYaParqueado(String placa) throws VehiculoNoAdmitidoException
 	{
 		if(parqueoRepository.consultarParqueoActivoPorPlaca(placa) != null) {
-			throw new VehiculoNoAdmitidoException(messageSource.getMessage("vehiculo.actualmenteParqueado",null,Locale.getDefault()));
+			throw new VehiculoNoAdmitidoException(mensajesExcepciones.obtenerMensaje("vehiculo.actualmenteParqueado"));
 		}
 	}
 	
@@ -127,7 +126,7 @@ public class ParqueaderoService {
 			case Calendar.MONDAY:break;
 			
 			default:
-				throw new VehiculoNoAdmitidoException(messageSource.getMessage("vehiculo.invalidoPorDia",null,Locale.getDefault()));
+				throw new VehiculoNoAdmitidoException(mensajesExcepciones.obtenerMensaje("vehiculo.invalidoPorDia"));
 		}
 	}
 
@@ -135,7 +134,7 @@ public class ParqueaderoService {
 	{
 		ParqueoEntity parqueoEntity = parqueoRepository.consultarParqueoActivoPorPlaca(placa);
 		if(parqueoEntity == null) {
-			throw new VehiculoNoAdmitidoException(messageSource.getMessage("vehiculo.noEstaParqueado",null,Locale.getDefault()));
+			throw new VehiculoNoAdmitidoException(mensajesExcepciones.obtenerMensaje("vehiculo.noEstaParqueado"));
 		}
 		
 		ParqueoVehiculo parqueoVehiculo = parqueoFactory.obtenerParqueo(parqueoEntity.getVehiculo().getTipoVehiculo().getId().intValue());

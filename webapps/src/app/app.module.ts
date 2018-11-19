@@ -18,6 +18,7 @@ import { faArrowCircleRight } from '@fortawesome/free-solid-svg-icons';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { TrmComponent } from './trm/trm.component';
 import { faMoneyBillAlt } from '@fortawesome/free-solid-svg-icons';
+import { faParking } from '@fortawesome/free-solid-svg-icons';
 
 // Add an icon to the library for convenient access in other components
 library.add(faFlagCheckered);
@@ -27,6 +28,7 @@ library.add(faCarCrash);
 library.add(faArrowCircleRight);
 library.add(faArrowRight);
 library.add(faMoneyBillAlt);
+library.add(faParking);
 
 
 @NgModule({
