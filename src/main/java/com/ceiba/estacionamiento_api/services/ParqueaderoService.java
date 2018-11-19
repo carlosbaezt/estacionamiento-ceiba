@@ -61,7 +61,7 @@ public class ParqueaderoService {
 			throw new VehiculoNoAdmitidoException(mensajesExcepciones.obtenerMensaje("vehiculo.nulo"));
 		}
 		
-		if(vehiculoDTO.getPlaca() == null || vehiculoDTO.getPlaca().isEmpty())
+		if(vehiculoDTO.getPlaca() == null || vehiculoDTO.getPlaca().trim().isEmpty())
 		{
 			throw new VehiculoNoAdmitidoException(mensajesExcepciones.obtenerMensaje("vehiculo.placaNula"));
 		}
