@@ -2,10 +2,8 @@ package com.ceiba.estacionamiento_api.services.impl;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 import com.ceiba.estacionamiento_api.enums.TipoVehiculo;
@@ -16,6 +14,7 @@ import com.ceiba.estacionamiento_api.persistence.builder.ParqueoBuilder;
 import com.ceiba.estacionamiento_api.persistence.entities.ParqueoEntity;
 import com.ceiba.estacionamiento_api.services.ParqueoMotoCobro;
 import com.ceiba.estacionamiento_api.services.ParqueoVehiculo;
+import com.ceiba.estacionamiento_api.utils.MensajesExcepciones;
 
 @Service
 public class ParqueoMoto extends ParqueoVehiculo implements ParqueoMotoCobro {
@@ -30,7 +29,7 @@ public class ParqueoMoto extends ParqueoVehiculo implements ParqueoMotoCobro {
 	private ParqueoRepository parqueoRepository;
 		
 	@Autowired
-	private MessageSource messageSource;
+	private MensajesExcepciones mensajesExcepciones;
 	
 	@Autowired
 	private ParqueoBuilder parqueoBuilder;
@@ -38,7 +37,7 @@ public class ParqueoMoto extends ParqueoVehiculo implements ParqueoMotoCobro {
 	@Override
 	public void guardarParqueo(Parqueo parqueo) throws VehiculoNoAdmitidoException {
 		if(!espacioDisponible(TipoVehiculo.MOTO.getCodigo(), TOTAL_ESPACIOS_DISPONIBLES)) {
-			throw new VehiculoNoAdmitidoException(messageSource.getMessage("parqueadero.sinEspacioDisponible",null,Locale.getDefault()));
+			throw new VehiculoNoAdmitidoException(mensajesExcepciones.obtenerMensaje("parqueadero.sinEspacioDisponible"));
 		}
 		
 		guardarParqueoVehiculo(parqueo);

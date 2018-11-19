@@ -1,6 +1,5 @@
 package com.ceiba.estacionamiento_api.services;
 
-import java.rmi.RemoteException;
 import java.text.DecimalFormat;
 
 import org.slf4j.Logger;
@@ -19,13 +18,13 @@ public class TcrmService{
 		
 	public Tcrm consultarTcrm() throws TcrmException
 	{
-		TCRMClient client = new TCRMClient();
 		try {
+			TCRMClient client = new TCRMClient();
 			DecimalFormat decimalFormat = new DecimalFormat("###,###.###");
 			Tcrm tcrm = new Tcrm();
 			tcrm.setTrm(decimalFormat.format(client.obtenerTRMActual()));
 			return tcrm;
-		} catch (RemoteException e) {
+		} catch (Exception e) {
 			LOGGER.info("error al consumir el WS de TCRM", e);
 			throw new TcrmException(e.getMessage());
 		}
